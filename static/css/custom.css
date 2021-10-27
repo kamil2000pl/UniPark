@@ -1,0 +1,45 @@
+/*
+    colours:
+    Primary: #215356
+    Secondary: #019592
+    button-primary: #707070
+    warning-background: #B00020
+    warning-icons: #FFC000
+*/
+
+/* Navbar custom */
+
+.unipark-unispan {
+    color: #019592;
+}
+
+.bg-dark {
+    background-color: #215356 !important;
+}
+
+/* Form custom */
+
+.bg-form {
+    background-color: #019592;
+}
+
+.form-label {
+    color: white;
+    font-weight: bolder;
+}
+
+.form-text {
+    color: black;
+    font-style: italic;
+}
+
+.btn-primary {
+    background-color: #707070;
+    border-color: #707070;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #215356;
+    border-color: #215356;
+}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head_section, form_section %}
+
+{% set active_page = "login" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block page_head_section %}
+    {{ page_head_section("Login") }}
+{% endblock %}
