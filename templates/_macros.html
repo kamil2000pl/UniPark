@@ -47,3 +47,30 @@
         </form>
     </div>
 {% endmacro %}
+
+{% macro login_form_section() %}
+    <div class="container">
+        <form class="main-form m-auto bg-form p-4">
+            <div class="row justify-content-center">
+            <div class="mb-3 col-sm-12">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
+                <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3 col-sm-12">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword">
+            </div>
+                <div class="mb-3 col-sm-12 text-center">
+                <span class="fst-italic">Forgot Password?</span>
+                <a href="" class="text-white fst-italic text-decoration-none fw-bold">Click Here</a>
+            </div>
+            <div class="mb-3 col-sm-12 text-center">
+                <span class="fst-italic">New Customer?</span>
+                <a href="register" class="text-white fst-italic text-decoration-none fw-bold">Register Here</a>
+            </div>
+            <button type="submit" class="btn w-75 btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+{% endmacro %}
