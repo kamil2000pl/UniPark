@@ -11,35 +11,39 @@
 {% endmacro %}
 
 {% macro register_form_section() %}
-    <div class="container mb-4 p-4 bg-form">
-   <form class="row">
-     <div class="mb-3 col-sm-12 col-md-6">
-    <label for="inputFullName" class="form-label">Full Name</label>
-    <input type="text" class="form-control" id="inputFullName" aria-describedby="register">
-    <div id="fullNameHelperText" class="form-text">Enter your full name</div>
-  </div>
-        <div class="mb-3 col-sm-12 col-md-6">
-    <label for="inputEmail" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
-    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
-  </div>
-  <div class="mb-3 col-sm-12 col-md-6">
-    <label for="inputPassword" class="form-label">Password</label>
-    <input type="password" class="form-control" id="inputPassword">
-  </div>
-  <div class="mb-3 col-sm-12 col-md-6">
-    <label for="inputPasswordRepeat" class="form-label">Repeat Password</label>
-    <input type="password" class="form-control" id="inputPasswordRepeat">
-  </div>
-       <div class="mb-3 col-sm-12 text-center">
-           <span class="fst-italic">Already a customer?</span>
-           <a href="login" class="text-white fst-italic text-decoration-none fw-bold">Login Here</a>
-  </div>
-  <div class="mb-3 form-check col-sm-12">
-    <input type="checkbox" class="form-check-input" id="termsCheck">
-    <label class="form-check-label" for="termsCheck">Agree to terms & conditions</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Register</button>
-</form>
+    <div class="container">
+        <form class="main-form m-auto bg-form p-4">
+            <div class="row justify-content-center">
+            <div class="mb-3 col-sm-12">
+                <label for="inputFullName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="inputFullName" aria-describedby="register">
+                <div id="fullNameHelperText" class="form-text">Enter your full name</div>
+            </div>
+            <div class="mb-3 col-sm-12">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
+                <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3 col-sm-12">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword">
+            </div>
+            <div class="mb-3 col-sm-12">
+                <label for="inputPasswordRepeat" class="form-label">Repeat Password</label>
+                <input type="password" class="form-control" id="inputPasswordRepeat">
+            </div>
+            <div class="mb-3 col-sm-12 text-center">
+                <span class="fst-italic">Already a customer?</span>
+                <a href="login" class="text-white fst-italic text-decoration-none fw-bold">Login Here</a>
+            </div>
+            <div class="mb-3 form-check col-sm-12 text-center">
+                <label class="form-check-label" for="termsCheck">
+                    <input type="checkbox" class="form-check-input" id="termsCheck">
+                    Agree to terms & conditions
+                </label>
+            </div>
+            <button type="submit" class="btn w-75 btn-primary">Register</button>
+            </div>
+        </form>
     </div>
 {% endmacro %}

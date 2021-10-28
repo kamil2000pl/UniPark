@@ -23,6 +23,10 @@
     background-color: #019592;
 }
 
+.main-form {
+    width: 450px;
+}
+
 .form-label {
     color: white;
     font-weight: bolder;
