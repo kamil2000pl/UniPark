@@ -7,6 +7,22 @@
     warning-icons: #FFC000
 */
 
+/* Globals e.g backgrounds */
+
+.bg-main {
+    background-color: #215356;
+    color: white;
+}
+
+.main-hover-bg-change:hover {
+    background-color: #019592;
+}
+
+/* Icons */
+.dashboard-icon {
+    font-size: 2em;
+}
+
 /* Navbar custom */
 
 .unipark-unispan {
@@ -47,3 +63,6 @@
     background-color: #215356;
     border-color: #215356;
 }
+
+/* User Dashboard */
+

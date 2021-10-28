@@ -1,4 +1,4 @@
-{# MACROS FOR REUSABLE COMPONENTS #}
+{# MACROS FOR COMPONENTS #}
 
 {% macro page_head_section(text) %}
     <div class="container-fluid">
@@ -14,35 +14,35 @@
     <div class="container">
         <form class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
-            <div class="mb-3 col-sm-12">
-                <label for="inputFullName" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="inputFullName" aria-describedby="register">
-                <div id="fullNameHelperText" class="form-text">Enter your full name</div>
-            </div>
-            <div class="mb-3 col-sm-12">
-                <label for="inputEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
-                <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3 col-sm-12">
-                <label for="inputPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword">
-            </div>
-            <div class="mb-3 col-sm-12">
-                <label for="inputPasswordRepeat" class="form-label">Repeat Password</label>
-                <input type="password" class="form-control" id="inputPasswordRepeat">
-            </div>
-            <div class="mb-3 col-sm-12 text-center">
-                <span class="fst-italic">Already a customer?</span>
-                <a href="login" class="text-white fst-italic text-decoration-none fw-bold">Login Here</a>
-            </div>
-            <div class="mb-3 form-check col-sm-12 text-center">
-                <label class="form-check-label" for="termsCheck">
-                    <input type="checkbox" class="form-check-input" id="termsCheck">
-                    Agree to terms & conditions
-                </label>
-            </div>
-            <button type="submit" class="btn w-75 btn-primary">Register</button>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputFullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="inputFullName" aria-describedby="register">
+                    <div id="fullNameHelperText" class="form-text">Enter your full name</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
+                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="inputPassword">
+                </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputPasswordRepeat" class="form-label">Repeat Password</label>
+                    <input type="password" class="form-control" id="inputPasswordRepeat">
+                </div>
+                <div class="mb-3 col-sm-12 text-center">
+                    <span class="fst-italic">Already a customer?</span>
+                    <a href="login" class="text-white fst-italic text-decoration-none fw-bold">Login Here</a>
+                </div>
+                <div class="mb-3 form-check col-sm-12 text-center">
+                    <label class="form-check-label" for="termsCheck">
+                        <input type="checkbox" class="form-check-input" id="termsCheck">
+                        Agree to terms & conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn w-75 btn-primary">Register</button>
             </div>
         </form>
     </div>
@@ -52,25 +52,81 @@
     <div class="container">
         <form class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
-            <div class="mb-3 col-sm-12">
-                <label for="inputEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
-                <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3 col-sm-12">
-                <label for="inputPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword">
-            </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="inputEmail" aria-describedby="register">
+                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="inputPassword">
+                </div>
                 <div class="mb-3 col-sm-12 text-center">
-                <span class="fst-italic">Forgot Password?</span>
-                <a href="" class="text-white fst-italic text-decoration-none fw-bold">Click Here</a>
-            </div>
-            <div class="mb-3 col-sm-12 text-center">
-                <span class="fst-italic">New Customer?</span>
-                <a href="register" class="text-white fst-italic text-decoration-none fw-bold">Register Here</a>
-            </div>
-            <button type="submit" class="btn w-75 btn-primary">Login</button>
+                    <span class="fst-italic">Forgot Password?</span>
+                    <a href="" class="text-white fst-italic text-decoration-none fw-bold">Click Here</a>
+                </div>
+                <div class="mb-3 col-sm-12 text-center">
+                    <span class="fst-italic">New Customer?</span>
+                    <a href="register" class="text-white fst-italic text-decoration-none fw-bold">Register Here</a>
+                </div>
+                <button type="submit" class="btn w-75 btn-primary">Login</button>
             </div>
         </form>
+    </div>
+{% endmacro %}
+
+{% macro user_dashboard_section() %}
+    <div class="container user-dashboard-container">
+        <div class="row m-auto justify-content-center">
+            <div class="row mb-4">
+                <div class="col-12 border bg-main">
+                    <div class="p-4">
+                        <div class="display-5 mb-4 text-center text-white">
+                            Tasks to Complete
+                            <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">An item
+                            </li>
+                            <li class="list-group-item">A second item
+                            </li>
+                            <li class="list-group-item">A third item
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 border bg-main main-hover-bg-change">
+                    <div class="p-4 text-center">
+                        <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                        <div class="h3">Top Up Account</div>
+                        <i class="bi bi-wallet-fill dashboard-icon"></i>
+                    </div>
+                </div>
+                <div class="col-6 border bg-main main-hover-bg-change">
+                    <div class="p-4 text-center">
+                        <div class="h3">Current Parking</div>
+                        <i class="bi bi-alarm-fill dashboard-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 border bg-main main-hover-bg-change">
+                     <div class="p-4 text-center">
+                        <div class="h3">View Transaction History</div>
+                         <i class="bi bi-clock-history dashboard-icon"></i>
+                    </div>
+                </div>
+                <div class="col-6 border bg-main main-hover-bg-change">
+                    <div class="p-4 text-center">
+                        <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                        <div class="h3">Manage Account</div>
+                        <i class="bi bi-person-circle dashboard-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endmacro %}

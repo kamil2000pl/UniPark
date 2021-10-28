@@ -18,5 +18,10 @@ def login():
     return render_template("login.html")
 
 
+@app.route('/user')
+def user_dashboard():
+    return render_template("user_dashboard.html")
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

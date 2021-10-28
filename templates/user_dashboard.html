@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head_section, user_dashboard_section %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block page_head_section %}
+    {{ page_head_section("Welcome Name") }}
+{% endblock %}
+
+{% block user_dashboard_section %}
+    {{ user_dashboard_section() }}
+{% endblock %}
