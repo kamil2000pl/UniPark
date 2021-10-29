@@ -7,7 +7,7 @@
     warning-icons: #FFC000
 */
 
-/* Globals e.g backgrounds */
+/* Globals e.g backgrounds, custom heights etc... */
 
 .bg-main {
     background-color: #215356;
@@ -16,6 +16,10 @@
 
 .main-hover-bg-change:hover {
     background-color: #019592;
+}
+
+.height-50px {
+    height: 50px;
 }
 
 /* Icons */
