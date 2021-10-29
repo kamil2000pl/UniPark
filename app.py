@@ -23,5 +23,9 @@ def user_dashboard():
     return render_template("user_dashboard.html")
 
 
+@app.route('/user_manage_account')
+def user_manage_account():
+    return render_template("user_manage_account.html")
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

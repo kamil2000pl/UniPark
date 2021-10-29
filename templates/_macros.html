@@ -100,14 +100,18 @@
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
                     <div class="row h-100 align-content-center text-center">
-                        <div class="col-12">
+                        <div class="col-6 text-end">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                        </div>
+                        <div class="col-6 text-start">
+                            <i class="bi bi-wallet-fill dashboard-icon"></i>
                         </div>
                         <div class="col-12">
                             <div class="h3">Top Up Account</div>
                         </div>
                         <div class="col-12">
-                            <i class="bi bi-wallet-fill dashboard-icon"></i>
+                            <div class="fst-italic">Current Balance:</div>
+                            <div class="fst-italic fw-bold fs-1">€0.00</div>
                         </div>
                     </div>
                 </div>
@@ -116,6 +120,9 @@
                 <div class="row h-100 align-content-center text-center">
                     <div class="col-12">
                         <div class="h3">Current Parking</div>
+                        <div class="fst-italic">Today's Date:
+                            <span class="fw-bold" id="currentParkingTodayDate"></span>
+                        </div>
                     </div>
                     <div class="col-12">
                         <i class="bi bi-alarm-fill dashboard-icon"></i>
@@ -147,6 +154,67 @@
                         <div class="col-12">
                             <i class="bi bi-person-circle dashboard-icon"></i>
                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro user_manage_account_section() %}
+    <div class="container user-dashboard-container">
+        <div class="row m-auto justify-content-center">
+            <div class="row">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                    <div class="row h-100 align-content-center text-center">
+                        <div class="col-12">
+                            <i class="bi bi-person-circle dashboard-icon"></i>
+                        </div>
+                        <div class="col-12">
+                            <div class="h3">Personal Details</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="row h-100 align-content-center text-center">
+                   <div class="col-12">
+                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                         </div>
+                        <div class="col-12">
+                            <div class="h3">Car Details</div>
+                         </div>
+                        <div class="col-12">
+                            <i class="fa fa-car dashboard-icon"></i>
+                         </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                    <div class="row h-100 align-content-center text-center">
+                       <div class="col-12">
+                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                         </div>
+                        <div class="col-12">
+                            <div class="h3">Card Payment Details</div>
+                         </div>
+                        <div class="col-12">
+                            <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                    <div class="row h-100 align-content-center text-center">
+                        <div class="col-12">
+                            <i class="bi bi-person-plus-fill dashboard-icon"></i>
+                        </div>
+                        <div class="col-12">
+                            <div class="h3">Add Another User To Account</div>
+                        </div>
                     </div>
                 </div>
             </div>
