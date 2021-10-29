@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head_section, user_manage_car_section %}
+
+{% block title %}
+    Manage Car
+{% endblock %}
+
+{% block page_head_section %}
+    {{ page_head_section("Manage Car Details") }}
+{% endblock %}
+
+{% block user_manage_car_section %}
+    {{ user_manage_car_section() }}
+{% endblock %}

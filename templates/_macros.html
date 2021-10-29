@@ -117,29 +117,29 @@
                 </div>
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
-                <div class="row h-100 align-content-center text-center">
-                    <div class="col-12">
-                        <div class="h3">Current Parking</div>
-                        <div class="fst-italic">Today's Date:
-                            <span class="fw-bold" id="currentParkingTodayDate"></span>
+                    <div class="row h-100 align-content-center text-center">
+                        <div class="col-12">
+                            <div class="h3">Current Parking</div>
+                            <div class="fst-italic">Today's Date:
+                                <span class="fw-bold" id="currentParkingTodayDate"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <i class="bi bi-alarm-fill dashboard-icon"></i>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <i class="bi bi-alarm-fill dashboard-icon"></i>
-                    </div>
-                </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
                     <div class="row h-100 align-content-center text-center">
-                         <div class="col-12">
-                             <div class="h3">View Transaction History</div>
-                         </div>
-                         <div class="col-12">
-                             <i class="bi bi-clock-history dashboard-icon"></i>
-                         </div>
+                        <div class="col-12">
+                            <div class="h3">View Transaction History</div>
+                        </div>
+                        <div class="col-12">
+                            <i class="bi bi-clock-history dashboard-icon"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -147,13 +147,13 @@
                     <div class="row h-100 align-content-center text-center">
                         <div class="col-12">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <div class="h3">Manage Account</div>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <i class="bi bi-person-circle dashboard-icon"></i>
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,32 +178,32 @@
                 </div>
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
-                <div class="row h-100 align-content-center text-center">
-                   <div class="col-12">
+                    <div class="row h-100 align-content-center text-center">
+                        <div class="col-12">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <div class="h3">Car Details</div>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <i class="fa fa-car dashboard-icon"></i>
-                         </div>
-                </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
                     <div class="row h-100 align-content-center text-center">
-                       <div class="col-12">
+                        <div class="col-12">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <div class="h3">Card Payment Details</div>
-                         </div>
+                        </div>
                         <div class="col-12">
                             <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
-                         </div>
+                        </div>
                     </div>
                 </div>
 
@@ -221,3 +221,42 @@
         </div>
     </div>
 {% endmacro %}
+
+{% macro user_manage_car_section() %}
+    <div class="container user-dashboard-container">
+        <div class="row m-auto justify-content-center">
+            <div class="row mb-2">
+                <div class="col-12 border bg-main">
+                    <div class="p-4">
+                        <div class="display-5 mb-4 text-center text-white">
+                            Current Vehicles
+                        </div>
+                        <p class="lead fst-italic text-center">Add up to three vehicles per account</p>
+                        <ul class="list-group">
+                             <li class="list-group-item d-flex justify-content-between align-items-center">Car 1
+                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Car 2
+                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-12 border bg-main">
+                    <div class="p-4">
+                        <div class="display-5 mb-4 text-center text-white">
+                            Enter Vehicle Reg
+                        </div>
+                        input field here
+                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
