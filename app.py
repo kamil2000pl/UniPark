@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 # ROUTES NOT CORRECT, JUST DOING BELOW TO VIEW WEBPAGES QUICKLY
 
+
 @app.route('/')
 def index():
     return render_template("index.html")

@@ -14,6 +14,10 @@
     color: white;
 }
 
+.bg-second:hover {
+    background-color: #019592 !important;
+}
+
 .main-hover-bg-change:hover {
     background-color: #019592;
 }
@@ -66,6 +70,12 @@
     color: #fff;
     background-color: #215356;
     border-color: #215356;
+}
+
+.custom-input-reg {
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: x-large;
 }
 
 /* User Dashboard */
