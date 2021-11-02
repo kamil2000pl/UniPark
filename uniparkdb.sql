@@ -13,7 +13,7 @@ CREATE TABLE locations (
 	location_name VARCHAR(20),
 	total_spaces INT,
 	available_spaces INT,
-	PRIMARY KEY (location_id),
+	PRIMARY KEY (location_id));
 	
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
@@ -48,7 +48,7 @@ CREATE TABLE transaction_history (
 	location_id INT NOT NULL,
 	cost DOUBLE(4,2),
 	PRIMARY KEY (transaction_id),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id)
+	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 	FOREIGN KEY (location_id) REFERENCES locations(location_id));
 	
 CREATE TABLE entry_exit (
