@@ -58,5 +58,6 @@ CREATE TABLE entry_exit (
 	registration VARCHAR(15) NOT NULL,
 	registration_image VARCHAR(25),
 	PRIMARY KEY (entry_exit_id),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+	FOREIGN KEY (registration) REFERENCES cars(registration));
 
