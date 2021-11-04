@@ -253,7 +253,7 @@
                         <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" aria-describedby="vehicleReg">
                     </div>
                     <div class="mb-3 col-12">
-                      <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
+                        <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
                     </div>
                 </div>
             </div>
@@ -274,14 +274,49 @@
                     <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-8">
-                   <label for="inputExpiryDate" class="form-label">Expiry Date</label>
+                    <label for="inputExpiryDate" class="form-label">Expiry Date</label>
                     <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-4">
-                     <label for="inputCCV" class="form-label">CCV</label>
+                    <label for="inputCCV" class="form-label">CCV</label>
                     <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
                 </div>
                 <button type="submit" class="btn w-75 btn-primary">Save Card Details</button>
+            </div>
+        </form>
+    </div>
+{% endmacro %}
+
+{% macro user_top_up_account_section() %}
+    <div class="container">
+        <form class="main-form m-auto bg-form p-4">
+            <div class="row justify-content-center">
+                <div class="mb-3 col-sm-12">
+                    <label for="inputNameOnCard" class="form-label">Name On Card</label>
+                    <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                </div>
+                <div class="mb-3 col-sm-12">
+                    <label for="inputCardNumber" class="form-label">Card Number</label>
+                    <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                </div>
+                <div class="mb-3 col-8">
+                    <label for="inputExpiryDate" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="inputCCV" class="form-label">CCV</label>
+                    <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
+                </div>
+                <div class="mb-3 col-12">
+                    <label for="inputAmount" class="form-label">Top Up Amount €</label>
+                    <input type="text" class="form-control" id="inputAmount" aria-describedby="payment">
+                </div>
+                <div class="mb-3 col-6">
+                    <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>
+                </div>
+                <div class="mb-3 col-6">
+                    <button type="submit" class="btn w-100 btn-primary">Process Payment</button>
+                </div>
             </div>
         </form>
     </div>

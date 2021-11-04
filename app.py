@@ -40,5 +40,10 @@ def user_card_payment_details():
     return render_template("user_card_payment_details.html")
 
 
+@app.route('/user_top_up_account')
+def user_top_up_account():
+    return render_template("user_top_up_account.html")
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
