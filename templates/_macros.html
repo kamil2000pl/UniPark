@@ -289,36 +289,46 @@
 
 {% macro user_top_up_account_section() %}
     <div class="container">
-        <form class="main-form m-auto bg-form p-4">
-            <div class="row justify-content-center">
-                <div class="mb-3 col-sm-12">
-                    <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                    <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+        <div class="row m-auto justify-content-center">
+            <form class="main-form m-auto bg-form p-4">
+                <div class="bg-main p-4 text-center mb-3 border-5">
+                    <div class="display-5">
+                        Current Balance
+                    </div>
+                     <div class="display-4 fw-bolder fst-italic">
+                        €0.00
+                    </div>
                 </div>
-                <div class="mb-3 col-sm-12">
-                    <label for="inputCardNumber" class="form-label">Card Number</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                <div class="row justify-content-center">
+                    <div class="mb-3 col-sm-12">
+                        <label for="inputNameOnCard" class="form-label">Name On Card</label>
+                        <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                    </div>
+                    <div class="mb-3 col-sm-12">
+                        <label for="inputCardNumber" class="form-label">Card Number</label>
+                        <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                    </div>
+                    <div class="mb-3 col-8">
+                        <label for="inputExpiryDate" class="form-label">Expiry Date</label>
+                        <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                    </div>
+                    <div class="mb-3 col-4">
+                        <label for="inputCCV" class="form-label">CCV</label>
+                        <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label for="inputAmount" class="form-label">Top Up Amount €</label>
+                        <input type="text" class="form-control" id="inputAmount" aria-describedby="payment">
+                    </div>
+                    <div class="mb-3 col-6">
+                        <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <button type="submit" class="btn w-100 btn-primary">Process Payment</button>
+                    </div>
                 </div>
-                <div class="mb-3 col-8">
-                    <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
-                </div>
-                <div class="mb-3 col-4">
-                    <label for="inputCCV" class="form-label">CCV</label>
-                    <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
-                </div>
-                <div class="mb-3 col-12">
-                    <label for="inputAmount" class="form-label">Top Up Amount €</label>
-                    <input type="text" class="form-control" id="inputAmount" aria-describedby="payment">
-                </div>
-                <div class="mb-3 col-6">
-                    <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>
-                </div>
-                <div class="mb-3 col-6">
-                    <button type="submit" class="btn w-100 btn-primary">Process Payment</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 {% endmacro %}
 
