@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head_section, user_manage_payment_section %}
+
+{% block title %}
+    Card Payment Details
+{% endblock %}
+
+{% block page_head_section %}
+    {{ page_head_section("Card Payment Details") }}
+{% endblock %}
+
+{% block user_manage_car_section %}
+    {{ user_manage_payment_section() }}
+{% endblock %}

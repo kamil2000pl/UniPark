@@ -34,5 +34,11 @@ def user_manage_account():
 def user_manage_car():
     return render_template("user_manage_car.html")
 
+
+@app.route('/user_card_payment_details')
+def user_card_payment_details():
+    return render_template("user_card_payment_details.html")
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
