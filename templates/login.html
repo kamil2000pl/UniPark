@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import page_head_section, login_form_section %}
+{% from "_macros.html" import page_head_section %}
 
 {% set active_page = "login" %}
 
@@ -12,5 +12,29 @@
 {% endblock %}
 
 {% block login_form_section %}
-    {{ login_form_section() }}
+     <div class="container">
+        <form method="POST" action="{{ url_for('login') }}" class="main-form m-auto bg-form p-4">
+            {{ form.hidden_tag() }}
+            <div class="row justify-content-center">
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputEmail.label(class_="form-label") }}
+                    {{ form.inputEmail(class_="form-control") }}
+                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputPassword.label(class_="form-label") }}
+                    {{ form.inputPassword(class_="form-control") }}
+                </div>
+                <div class="mb-3 col-sm-12 text-center">
+                    <span class="fst-italic">Forgot Password?</span>
+                    <a href="" class="text-white fst-italic text-decoration-none fw-bold">Click Here</a>
+                </div>
+                <div class="mb-3 col-sm-12 text-center">
+                    <span class="fst-italic">New Customer?</span>
+                    <a href="register" class="text-white fst-italic text-decoration-none fw-bold">Register Here</a>
+                </div>
+                <button type="submit" class="btn w-75 btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

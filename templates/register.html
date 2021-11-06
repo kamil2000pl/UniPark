@@ -12,7 +12,42 @@
 {% endblock %}
 
 {% block register_form_section %}
-    {{ register_form_section() }}
+    <div class="container">
+        <form class="main-form m-auto bg-form p-4">
+            {{ form.hidden_tag() }}
+            <div class="row justify-content-center">
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputFullName.label(class_="form-label") }}
+                    {{ form.inputFullName(class_="form-control") }}
+                    <div id="fullNameHelperText" class="form-text">Enter your full name</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputEmail.label(class_="form-label") }}
+                    {{ form.inputEmail(class_="form-control") }}
+                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputPassword.label(class_="form-label") }}
+                    {{ form.inputPassword(class_="form-control") }}
+                </div>
+                <div class="mb-3 col-sm-12">
+                    {{ form.inputPasswordRepeat.label(class_="form-label") }}
+                    {{ form.inputPasswordRepeat(class_="form-control") }}
+                </div>
+                <div class="mb-3 col-sm-12 text-center">
+                    <span class="fst-italic">Already a customer?</span>
+                    <a href="login" class="text-white fst-italic text-decoration-none fw-bold">Login Here</a>
+                </div>
+                <div class="mb-3 form-check col-sm-12 text-center">
+                    <label class="form-check-label" for="termsCheck">
+                        <input type="checkbox" class="form-check-input" id="termsCheck">
+                        Agree to terms & conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn w-75 btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 
