@@ -30,11 +30,13 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/register')
+# FIX HERE
+@app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
+        # post them to db
         return '<h1>' + form.inputEmail.data + ' ' + form.inputPassword.data + '</h1>'
     else:
         return render_template("register.html", form=form)
@@ -45,6 +47,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
+        # check if they exist in db
         return '<h1>' + form.inputEmail.data + ' ' + form.inputPassword.data + '</h1>'
     else:
         return render_template("login.html", form=form)
