@@ -18,17 +18,42 @@
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     {{ form.inputFullName.label(class_="form-label") }}
-                    {{ form.inputFullName(class_="form-control") }}
-                    <div id="fullNameHelperText" class="form-text">Enter your full name</div>
+                    {{ form.inputFullName(autofocus=true, autocomplete="off",class_="form-control") }}
+                    {% if form.inputFullName.errors %}
+                    <div id="fullNameHelperText" class="form-text">
+                        <ul>
+                        {% for error in form.inputFullName.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputEmail.label(class_="form-label") }}
-                    {{ form.inputEmail(class_="form-control") }}
-                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                    {{ form.inputEmail(autocomplete="off", class_="form-control") }}
+                    {% if form.inputEmail.errors %}
+                    <div id="emailHelperText" class="form-text">
+                        <ul>
+                        {% for error in form.inputEmail.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputPassword.label(class_="form-label") }}
                     {{ form.inputPassword(class_="form-control") }}
+                    {% if form.inputPassword.errors %}
+                    <div id="passwordHelperText" class="form-text">
+                        <ul>
+                        {% for error in form.inputPassword.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputPasswordRepeat.label(class_="form-label") }}
@@ -44,7 +69,7 @@
                         Agree to terms & conditions
                     </label>
                 </div>
-                <button type="submit" class="btn w-75 btn-primary">Register</button>
+                {{ form.submit(class_="btn w-75 btn-primary") }}
             </div>
         </form>
     </div>

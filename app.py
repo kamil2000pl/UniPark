@@ -1,11 +1,13 @@
+import json
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
-formData = {}
+registeredUser = {}
 
 
 # Forms
@@ -16,11 +18,12 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    inputFullName = StringField('Full Name', validators=[InputRequired(), Length(min=8, max=80)])
-    inputEmail = StringField('Email Address', validators=[InputRequired(), Length(min=8, max=80), Email()])
-    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80, message="minimum 8 chars"), EqualTo('inputPasswordRepeat', message='Passwords must match')])
+    inputFullName = StringField('Full Name', validators=[InputRequired(), Length(min=3)])
+    inputEmail = StringField('Email Address', validators=[Email(), InputRequired(), Length(min=8)])
+    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8), EqualTo('inputPasswordRepeat', message='Passwords must match')])
     inputPasswordRepeat = PasswordField('Repeat Password')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Register')
+
 
 # ROUTES NOT CORRECT, JUST DOING BELOW TO VIEW WEBPAGES QUICKLY
 
@@ -36,8 +39,12 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        # post them to db
-        return '<h1>' + form.inputEmail.data + ' ' + form.inputPassword.data + '</h1>'
+        # post them to db - below just testing login / reg without db
+        registeredUser["fullName"] = form.inputFullName.data
+        registeredUser["email"] = form.inputEmail.data
+        hashed_password = generate_password_hash(form.inputPassword.data, method="sha256")
+        registeredUser["password"] = hashed_password
+        return redirect(url_for("login"))
     else:
         return render_template("register.html", form=form)
 
@@ -48,7 +55,10 @@ def login():
 
     if form.validate_on_submit():
         # check if they exist in db
-        return '<h1>' + form.inputEmail.data + ' ' + form.inputPassword.data + '</h1>'
+        if form.inputEmail.data == registeredUser["email"]:
+            if check_password_hash(registeredUser["password"], form.inputPassword.data):
+                return redirect(url_for("user_dashboard"))
+            return "<h1>Invalid Login</h1>"
     else:
         return render_template("login.html", form=form)
 

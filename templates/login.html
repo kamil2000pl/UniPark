@@ -18,7 +18,7 @@
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     {{ form.inputEmail.label(class_="form-label") }}
-                    {{ form.inputEmail(class_="form-control") }}
+                    {{ form.inputEmail(autofocus=true, autocomplete="off", class_="form-control") }}
                     {% if form.inputEmail.errors %}
                     <div id="emailHelperText" class="form-text">
                         <ul>
@@ -50,7 +50,7 @@
                     <span class="fst-italic">New Customer?</span>
                     <a href="{{ url_for('register')}}" class="text-white fst-italic text-decoration-none fw-bold">Register Here</a>
                 </div>
-                <button type="submit" class="btn w-75 btn-primary">Login</button>
+                {{ form.submit(class_="btn w-75 btn-primary") }}
             </div>
         </form>
     </div>
