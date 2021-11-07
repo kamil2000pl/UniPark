@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import InputRequired, data_required, Email, Length, DataRequired, EqualTo
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
@@ -10,8 +10,8 @@ formData = {}
 
 # Forms
 class LoginForm(FlaskForm):
-    inputEmail = StringField('Email Address', validators=[InputRequired(), Length(min=8, max=80), Email()])
-    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80, message="minimum 8 chars")])
+    inputEmail = StringField('Email Address', validators=[Email(), InputRequired(), Length(min=8)])
+    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8)])
     submit = SubmitField('Submit')
 
 

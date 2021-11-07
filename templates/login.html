@@ -19,11 +19,28 @@
                 <div class="mb-3 col-sm-12">
                     {{ form.inputEmail.label(class_="form-label") }}
                     {{ form.inputEmail(class_="form-control") }}
-                    <div id="emailHelperText" class="form-text">We'll never share your email with anyone else.</div>
+                    {% if form.inputEmail.errors %}
+                    <div id="emailHelperText" class="form-text">
+                        <ul>
+                        {% for error in form.inputEmail.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputPassword.label(class_="form-label") }}
                     {{ form.inputPassword(class_="form-control") }}
+                    {% if form.inputPassword.errors %}
+                     <div id="passwordHelperText" class="form-text">
+                        <ul>
+                        {% for error in form.inputPassword.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12 text-center">
                     <span class="fst-italic">Forgot Password?</span>
