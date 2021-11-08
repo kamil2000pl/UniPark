@@ -61,3 +61,45 @@ CREATE TABLE entry_exit (
 	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 	FOREIGN KEY (registration) REFERENCES cars(registration));
 
+
+INSERT INTO accounts VALUES(1, 0); #--Query can be entered normally without column names
+INSERT INTO accounts (account_balance) VALUES(5); #--Using auto increment
+INSERT INTO accounts (account_id, account_balance) VALUES(3, 3.50); #--Query can be entered normally with column names
+
+INSERT INTO locations VALUES(1, "DkIT PJCarrolls", 400, 30);
+INSERT INTO locations (location_name, total_spaces, available_spaces) VALUES("DkIT PJCarrolls Rear", 60, 5); #--Using auto increment
+
+INSERT INTO users VALUES(1, 1, "DkIT", "Conor McGuire", "d00230552@student.dkit.ie");
+INSERT INTO users VALUES(2, 1, "DkIT", "Kamil Jozefowicz", "d00229452@student.dkit.ie");
+INSERT INTO users VALUES(3, 2, "DkIT", "Brian McKenna", "d00197352@student.dkit.ie");
+INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(2, "DkIT", "Jacqueline O'Connor", "d00230552@student.dkit.ie");
+INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
+
+INSERT INTO cars VALUES("161LH12345", 1, "Nissan", "Micra", "Silver");
+INSERT INTO cars VALUES("142LH54321", 1, "Skoda", "Octavia", "Red");
+INSERT INTO cars VALUES("212LH678", 2, "Audi", "A6", "Black");
+INSERT INTO cars VALUES("11MH345", 2, "Toyota", "Corolla", "Blue");
+INSERT INTO cars VALUES("10D9393", 3, "Ford", "Focus", "Grey");
+INSERT INTO cars VALUES("05C2929", 3, "Honda", "Civic", "Silver");
+
+INSERT INTO payments VALUES(1, "1234567812345678", "12/24", "123");
+INSERT INTO payments VALUES(2, "8765432187654321", "12/24", "321");
+INSERT INTO payments VALUES(3, "1234567887654321", "12/24", "312");
+
+INSERT INTO transaction_history VALUES(1, 1, "2021-11-03 23:59:59", 1, 4.00);
+INSERT INTO transaction_history VALUES(2, 2, "2021-11-04 23:59:59", 2, 2.00);
+INSERT INTO transaction_history VALUES(3, 3, "2021-11-04 23:59:59", 1, 2.00);
+
+INSERT INTO entry_exit VALUES(1, 1, "2021-11-03 09:00:00", "161LH12345", "0001.png");
+INSERT INTO entry_exit VALUES(2, 1, "2021-11-03 09:00:00", "142LH54321", "0002.png");
+INSERT INTO entry_exit VALUES(3, 1, "2021-11-03 17:00:00", "161LH12345", "0003.png");
+INSERT INTO entry_exit VALUES(4, 1, "2021-11-03 17:00:00", "142LH54321", "0004.png");
+
+
+INSERT INTO entry_exit VALUES(5, 2, "2021-11-04 09:00:00", "212LH678", "0005.png");
+INSERT INTO entry_exit VALUES(6, 2, "2021-11-04 17:00:00", "212LH678", "0006.png");
+
+INSERT INTO entry_exit VALUES(7, 3, "2021-11-04 09:00:00", "10D9393", "0007.png");
+INSERT INTO entry_exit VALUES(8, 3, "2021-11-04 17:00:00", "05C2929", "0008.png");
+
+#--Test Queries
