@@ -80,3 +80,31 @@
 
 /* User Dashboard */
 
+
+/* Kiosk Screen */
+
+.kiosk-main-bg {
+    background-color: lightgray;
+}
+
+.kiosk-other-bg {
+    background-color: #797979;
+}
+
+.kiosk-secondary-bg {
+    background-color: #484848;
+}
+
+.display-screen-kiosk {
+    background-color: white;
+    color: black;
+}
+
+.custom-btn-kiosk {
+    height: 180px;
+    width: 180px;
+}
+
+.barcode-scanner-icon {
+    font-size: 3em;
+}

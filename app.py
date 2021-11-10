@@ -88,5 +88,10 @@ def user_top_up_account():
     return render_template("user_top_up_account.html")
 
 
+@app.route('/kiosk')
+def kiosk():
+    return render_template("kiosk.html")
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
