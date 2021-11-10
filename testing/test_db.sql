@@ -54,6 +54,7 @@ FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 FOREIGN KEY (location_id) REFERENCES locations(location_id));
 ALTER TABLE transaction_history AUTO_INCREMENT=4000;
 
+-- TODO - decide entry / exit documentation
 CREATE TABLE entry_exit (
 	entry_exit_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
@@ -102,6 +103,7 @@ INSERT INTO transaction_history VALUES
 (4001, 1005, "2021-11-04 23:59:59", "DKPJF256", 5.00),
 (4002, 1002, "2021-11-04 23:59:59", "DKPJB652", 2.00);
 
+-- TODO - decide entry / exit documentation
 INSERT INTO entry_exit VALUES
 (5000, 1000, "0001.png", "2021-11-03 09:00:00", "0011.png", "2021-11-03 17:00:00", "161LH12345"),
 (5001, 1005, "0003.png", "2021-11-03 09:00:00", "0033.png", "2021-11-03 17:00:00", "11MH345"),
