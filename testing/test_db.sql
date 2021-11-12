@@ -1,7 +1,7 @@
 DROP database IF EXISTS uniparkdb;
 CREATE database IF NOT EXISTS uniparkdb;
 USE uniparkdb;
-DROP TABLE IF EXISTS entry_exit, transaction_history, payments, cars, users, locations, accounts;
+DROP TABLE IF EXISTS entry, exit, transaction_history, payments, cars, users, locations, accounts;
 
 CREATE TABLE accounts (
 	account_id INT AUTO_INCREMENT NOT NULL,
@@ -56,7 +56,7 @@ FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 FOREIGN KEY (location_id) REFERENCES locations(location_id));
 ALTER TABLE transaction_history AUTO_INCREMENT=4000;
 
-CREATE TABLE entry (
+CREATE TABLE car_entry (
 	entry_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
 	registration VARCHAR(15) NOT NULL,
@@ -67,7 +67,7 @@ FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 FOREIGN KEY (registration) REFERENCES cars(registration));
 ALTER TABLE entry AUTO_INCREMENT=5000;
 
-CREATE TABLE exit (
+CREATE TABLE car_exit (
 	exit_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
 	registration VARCHAR(15) NOT NULL,
