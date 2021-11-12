@@ -1,5 +1,7 @@
-import json
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
@@ -8,6 +10,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
 registeredUser = {}
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_PORT'] = '8889'
+app.config['MYSQL_USER'] = 'brian'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'uniparkdb'
+mysql = MySQL(app)
 
 
 # Forms
@@ -36,14 +45,41 @@ def index():
 # FIX HERE
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    form = RegisterForm()
+    error_msg = ""
+    form = RegisterForm(request.form)
 
-    if form.validate_on_submit():
-        # post them to db - below just testing login / reg without db
-        registeredUser["fullName"] = form.inputFullName.data
-        registeredUser["email"] = form.inputEmail.data
+    if request.method == 'POST' and form.validate_on_submit():
+
+        fullname = form.inputFullName.data
+        email = form.inputEmail.data
         hashed_password = generate_password_hash(form.inputPassword.data, method="sha256")
-        registeredUser["password"] = hashed_password
+        password = hashed_password
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Check if email already exists in db
+        cur.execute("SELECT * FROM users WHERE email_address = %s", email)
+        check_email = cur.fetchone()
+
+        if check_email:
+            error_msg = "Email already exists"
+        else:
+            # Execute
+            cur.execute("INSERT INTO users(full_name, email_address, password) VALUES(%s, %s, %s)",
+                        (fullname, email, password))
+            # Commit to DB
+            mysql.connection.commit()
+            # Close connection
+            cur.close()
+            flash('the task created ', 'success')
+
+# post them to db - below just testing login / reg without db
+# registeredUser["fullName"] = form.inputFullName.data
+# registeredUser["email"] = form.inputEmail.data
+# hashed_password = generate_password_hash(form.inputPassword.data, method="sha256")
+# registeredUser["password"] = hashed_password
+
         return redirect(url_for("login"))
     else:
         return render_template("register.html", form=form)
