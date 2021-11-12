@@ -23,7 +23,7 @@ CREATE TABLE users (
 	college_id VARCHAR(10),
 	full_name VARCHAR(30),
 	email_address VARCHAR(30),
-	password VARCHAR(30),
+	password VARCHAR(80),
 PRIMARY KEY (user_id),
 FOREIGN KEY (account_id) REFERENCES accounts(account_id));
 ALTER TABLE users AUTO_INCREMENT=2000;
