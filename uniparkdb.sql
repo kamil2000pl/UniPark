@@ -9,7 +9,7 @@ CREATE TABLE accounts (
 	PRIMARY KEY (account_id));
 	
 CREATE TABLE locations (
-	location_id INT NOT NULL,
+	location_id INT NOT NULL AUTO_INCREMENT,
 	location_name VARCHAR(20),
 	total_spaces INT,
 	available_spaces INT,
@@ -35,7 +35,7 @@ CREATE TABLE cars (
 	
 CREATE TABLE payments (
 	account_id INT NOT NULL,
-	card_number INT,
+	card_number BIGINT,
 	card_expiry VARCHAR(5),
 	ccv INT,
 	PRIMARY KEY (card_number),
@@ -60,7 +60,8 @@ CREATE TABLE entry_exit (
 	PRIMARY KEY (entry_exit_id),
 	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 	FOREIGN KEY (registration) REFERENCES cars(registration));
-
+	
+	
 
 INSERT INTO accounts VALUES(1, 0); #--Query can be entered normally without column names
 INSERT INTO accounts (account_balance) VALUES(5); #--Using auto increment
@@ -69,9 +70,9 @@ INSERT INTO accounts (account_id, account_balance) VALUES(3, 3.50); #--Query can
 INSERT INTO locations VALUES(1, "DkIT PJCarrolls", 400, 30);
 INSERT INTO locations (location_name, total_spaces, available_spaces) VALUES("DkIT PJCarrolls Rear", 60, 5); #--Using auto increment
 
-INSERT INTO users VALUES(1, 1, "DkIT", "Conor McGuire", "d00230552@student.dkit.ie");
-INSERT INTO users VALUES(2, 1, "DkIT", "Kamil Jozefowicz", "d00229452@student.dkit.ie");
-INSERT INTO users VALUES(3, 2, "DkIT", "Brian McKenna", "d00197352@student.dkit.ie");
+INSERT INTO users VALUES(1, 1, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie");
+INSERT INTO users VALUES(2, 1, "d00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie");
+INSERT INTO users VALUES(3, 2, "d00197352", "Brian McKenna", "d00197352@student.dkit.ie");
 INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(2, "DkIT", "Jacqueline O'Connor", "d00230552@student.dkit.ie");
 INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
 
@@ -103,3 +104,45 @@ INSERT INTO entry_exit VALUES(7, 3, "2021-11-04 09:00:00", "10D9393", "0007.png"
 INSERT INTO entry_exit VALUES(8, 3, "2021-11-04 17:00:00", "05C2929", "0008.png");
 
 #--Test Queries
+
+#--User Registration
+INSERT INTO accounts (account_balance) VALUES(0); 
+INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
+
+#--User Login
+SELECT *
+FROM users JOIN accounts USING (account_id)
+WHERE users(email_address)
+
+#--Add car
+SELECT 
+INSERT INTO cars VALUES("161LH12345", 1, "Nissan", "Micra", "Silver");
+
+#--Add User
+INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
+
+#--Edit User
+
+#--Edit Car
+
+#--Edit Payment
+
+#--Check transaction history (user)
+
+#--Check entry exit (user)
+
+#--Car enters (Reg)
+
+#--Car enters(Student id)
+
+#--Car enters (Ticket)
+
+#--Car Exits (Student id)
+
+#--Car Exits (Ticket)
+
+#--Car Exits  (Reg)
+
+#--Delete Account
+
+#-- Delete User
