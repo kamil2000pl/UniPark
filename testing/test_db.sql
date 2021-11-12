@@ -1,7 +1,7 @@
 DROP database IF EXISTS uniparkdb;
 CREATE database IF NOT EXISTS uniparkdb;
 USE uniparkdb;
-DROP TABLE IF EXISTS entry, exit, transaction_history, payments, cars, users, locations, accounts;
+DROP TABLE IF EXISTS car_entry, car_exit, transaction_history, payments, cars, users, locations, accounts;
 
 CREATE TABLE accounts (
 	account_id INT AUTO_INCREMENT NOT NULL,
@@ -113,14 +113,14 @@ INSERT INTO transaction_history VALUES
 (4001, 1005, "2021-11-04 23:59:59", "DKPJF256", 5.00),
 (4002, 1002, "2021-11-04 23:59:59", "DKPJB652", 2.00);
 
-INSERT INTO entry VALUES
+INSERT INTO car_entry VALUES
 (5000, 1000, "161LH12345", "0001.png", "2021-11-03 09:00:00"),
 (5001, 1005, "11MH345", "0003.png", "2021-11-03 09:00:00"),
 (5002, 1002, "10D9393", "0005.png", "2021-11-04 09:00:00"),
 (5003, 1003, "212LH678", "0007.png", "2021-11-04 09:00:00"),
 (5004, 1004, "142LH54321", "0008.png", "2021-11-04 17:00:00");
 
-INSERT INTO exit VALUES
+INSERT INTO car_exit VALUES
 (6000, 1000, "161LH12345", "0011.png", "2021-11-03 17:00:00"),
 (6001, 1005, "11MH345", "0033.png", "2021-11-03 17:00:00"),
 (6002, 1002, "10D9393", "0066.png", "2021-11-04 17:00:00");
