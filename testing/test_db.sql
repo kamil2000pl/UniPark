@@ -65,7 +65,7 @@ CREATE TABLE car_entry (
 PRIMARY KEY (entry_id),
 FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 FOREIGN KEY (registration) REFERENCES cars(registration));
-ALTER TABLE entry AUTO_INCREMENT=5000;
+ALTER TABLE car_entry AUTO_INCREMENT=5000;
 
 CREATE TABLE car_exit (
 	exit_id INT NOT NULL AUTO_INCREMENT,
@@ -76,12 +76,14 @@ CREATE TABLE car_exit (
 PRIMARY KEY (exit_id),
 FOREIGN KEY (account_id) REFERENCES accounts(account_id),
 FOREIGN KEY (registration) REFERENCES cars(registration));
-ALTER TABLE exit AUTO_INCREMENT=6000;
+ALTER TABLE car_exit AUTO_INCREMENT=6000;
 
 
-INSERT INTO accounts VALUES(1000, 0); #--Query can be entered normally without column names
-INSERT INTO accounts (account_balance) VALUES(5); #--Using auto increment
-INSERT INTO accounts (account_id, account_balance) VALUES(1003, 3.50); #--Query can be entered normally with column names
+INSERT INTO accounts VALUES
+(1000, 0),
+(1002,3.50);
+INSERT INTO accounts (account_balance) VALUES(5);
+INSERT INTO accounts (account_id, account_balance) VALUES(1003, 3.50);
 INSERT INTO accounts (account_balance) VALUES(15.00);
 INSERT INTO accounts (account_balance) VALUES(7.50);
 
@@ -90,11 +92,10 @@ INSERT INTO locations VALUES
 ("DKPJB652", "DkIT PJCarrolls Rear", 60, 5);
 
 INSERT INTO users VALUES
-(2000, 1000, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie"),
-(2001, 1005, "D00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie"),
-(2002, 1002, "D00197352", "Brian McKenna", "d00197352@student.dkit.ie"),
-(2003, 1003, "D00230552", "Jacqueline O'Connor", "d00230552@student.dkit.ie"),
-(2004, 1004, "DS04785", "Fred Vradkar", "fvradkar@dkit.ie");
+(2000, 1000, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie", "password1"),
+(2001, 1005, "D00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie", "password2"),
+(2002, 1004, "D00197352", "Brian McKenna", "d00197352@student.dkit.ie", "password3"),
+(2003, 1003, "D00230552", "Jacqueline O'Connor", "d00230552@student.dkit.ie", "password4");
 
 INSERT INTO cars VALUES
 ("161LH12345", 1000),
