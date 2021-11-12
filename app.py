@@ -45,7 +45,7 @@ def index():
 # FIX HERE
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    error_msg = ""
+    msg = ""
     form = RegisterForm(request.form)
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -63,7 +63,7 @@ def register():
         check_email = cur.fetchone()
 
         if check_email:
-            error_msg = "Email already exists"
+            msg = "Email already exists"
         else:
             # Execute
             cur.execute("INSERT INTO users(full_name, email_address, password) VALUES(%s, %s, %s)",
@@ -87,14 +87,26 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    form = LoginForm()
+    msg = ""
+    form = LoginForm(request.form)
 
-    if form.validate_on_submit():
-        # check if they exist in db
-        if form.inputEmail.data == registeredUser["email"]:
-            if check_password_hash(registeredUser["password"], form.inputPassword.data):
-                return redirect(url_for("user_dashboard"))
-            return "<h1>Invalid Login</h1>"
+    if request.method == 'POST' and form.validate_on_submit():
+        email = form.inputEmail.data
+        password = form.inputPassword.data
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Check if email already exists in db
+        # might need to check password hash here will test later
+        cur.execute("SELECT * FROM users WHERE email_address = %s AND password = %s", email, password)
+        check_account = cur.fetchone()
+
+        if check_account:
+            msg = "Logged in successfully"
+            return redirect(url_for("user_dashboard"))
+        else:
+            msg = "Incorrect Details"
     else:
         return render_template("login.html", form=form)
 
