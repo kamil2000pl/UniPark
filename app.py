@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
+import mysql.connector
 import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -11,12 +10,17 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
 registeredUser = {}
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_PORT'] = '8889'
-app.config['MYSQL_USER'] = 'brian'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'uniparkdb'
-mysql = MySQL(app)
+config = {
+    'user': 'brian',
+    'password': 'brianmckenna',
+    'host': 'localhost',
+    'port': 8889,
+    'database': 'uniparkdb',
+    'raise_on_warnings': True,
+}
+
+cnx = mysql.connector.connect(**config)
+cursor = cnx.cursor()
 
 
 # Forms
@@ -55,30 +59,31 @@ def register():
         hashed_password = generate_password_hash(form.inputPassword.data, method="sha256")
         password = hashed_password
 
-        # Create Cursor
-        cur = mysql.connection.cursor()
-
         # Check if email already exists in db
-        cur.execute("SELECT * FROM users WHERE email_address = %s", email)
-        check_email = cur.fetchone()
+        value = (email,)
+        query = ("SELECT * FROM users "
+                 "WHERE email_address = %s")
+
+        cursor.execute(query, value)
+        check_email = cursor.fetchone()
 
         if check_email:
             msg = "Email already exists"
         else:
-            # Execute
-            cur.execute("INSERT INTO users(full_name, email_address, password) VALUES(%s, %s, %s)",
-                        (fullname, email, password))
-            # Commit to DB
-            mysql.connection.commit()
-            # Close connection
-            cur.close()
-            flash('the task created ', 'success')
+            add_user = ("INSERT INTO users"
+                        "(full_name, email_address, password) "
+                        "VALUES (%s, %s, %s)")
 
-# post them to db - below just testing login / reg without db
-# registeredUser["fullName"] = form.inputFullName.data
-# registeredUser["email"] = form.inputEmail.data
-# hashed_password = generate_password_hash(form.inputPassword.data, method="sha256")
-# registeredUser["password"] = hashed_password
+            user_data = (fullname, email, password)
+            # Execute
+            cursor.execute(add_user, user_data)
+            # Commit to DB
+            cnx.commit()
+            # Close Cursor & connection
+            cursor.close()
+            cnx.close()
+
+            flash('the task created ', 'success')
 
         return redirect(url_for("login"))
     else:
@@ -94,19 +99,29 @@ def login():
         email = form.inputEmail.data
         password = form.inputPassword.data
 
-        # Create Cursor
-        cur = mysql.connection.cursor()
-
         # Check if email already exists in db
         # might need to check password hash here will test later
-        cur.execute("SELECT * FROM users WHERE email_address = %s AND password = %s", email, password)
-        check_account = cur.fetchone()
+
+        # TO DO - FIX HERE - NEED TO FIGURE OUT PASSWORD HASH CHECK AND HOW TO PASS VALUES AFTER USER LOGS IN
+
+        # *******
+        values = (email, password)
+        query = ("SELECT * FROM users "
+                 "WHERE email_address = %s AND password = %s")
+
+        cursor.execute(query, values)
+        check_account = cursor.fetchone()
+        # *******
+
+        # cur.execute("SELECT * FROM users WHERE email_address = %s AND password = %s", email, password)
+        # check_account = cur.fetchone()
 
         if check_account:
             msg = "Logged in successfully"
             return redirect(url_for("user_dashboard"))
         else:
             msg = "Incorrect Details"
+            return redirect(url_for("index"))
     else:
         return render_template("login.html", form=form)
 
