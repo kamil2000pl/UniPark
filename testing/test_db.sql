@@ -23,7 +23,7 @@ CREATE TABLE users (
 	college_id VARCHAR(10),
 	full_name VARCHAR(30),
 	email_address VARCHAR(30),
-	password VARCHAR(30),
+	password VARCHAR(80),
 PRIMARY KEY (user_id),
 FOREIGN KEY (account_id) REFERENCES accounts(account_id));
 ALTER TABLE users AUTO_INCREMENT=2000;
@@ -79,13 +79,13 @@ FOREIGN KEY (registration) REFERENCES cars(registration));
 ALTER TABLE car_exit AUTO_INCREMENT=6000;
 
 
-INSERT INTO accounts VALUES
-(1000, 0),
-(1002,3.50);
+INSERT INTO accounts VALUES(1000, 0);
 INSERT INTO accounts (account_balance) VALUES(5);
 INSERT INTO accounts (account_id, account_balance) VALUES(1003, 3.50);
 INSERT INTO accounts (account_balance) VALUES(15.00);
 INSERT INTO accounts (account_balance) VALUES(7.50);
+INSERT INTO accounts VALUES(1002, 3.50);
+
 
 INSERT INTO locations VALUES
 ("DKPJF256", "DkIT PJCarrolls Front", 400, 30),
