@@ -13,4 +13,4 @@ Unipark uses a camera running OCR (Optical Character Recognition) to read vehicl
 https://www.scrumwise.com/scrum/#/overview/project/l8-sd3b-2021-unipark/id-31429-70387-111
 
 *Mahara:*
-https://mahara.dkit.ie/view/view.php?t=0SadnwgYviIFLMsBGj2b
+https://mahara.dkit.ie/view/view.php?t=6aZC59HxTVqJ02sk8tB7
