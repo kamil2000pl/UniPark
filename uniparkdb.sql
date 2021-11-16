@@ -1,148 +1,127 @@
 DROP database IF EXISTS uniparkdb;
 CREATE database IF NOT EXISTS uniparkdb;
 USE uniparkdb;
-DROP TABLE IF EXISTS entry_exit, transaction_history, payments, cars, users, locations, accounts;
+DROP TABLE IF EXISTS car_entry, car_exit, transaction_history, payments, cars, users, locations, accounts;
 
 CREATE TABLE accounts (
 	account_id INT AUTO_INCREMENT NOT NULL,
 	account_balance DOUBLE(4, 2),
-	PRIMARY KEY (account_id));
-	
+PRIMARY KEY (account_id));
+ALTER TABLE accounts AUTO_INCREMENT=1000;
+
 CREATE TABLE locations (
-	location_id INT NOT NULL AUTO_INCREMENT,
-	location_name VARCHAR(20),
+	location_id VARCHAR(8) NOT NULL,
+	location_name VARCHAR(30),
 	total_spaces INT,
 	available_spaces INT,
-	PRIMARY KEY (location_id));
-	
+PRIMARY KEY (location_id));
+
+-- TODO - hashing algorithm for password
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
 	college_id VARCHAR(10),
 	full_name VARCHAR(30),
 	email_address VARCHAR(30),
-	PRIMARY KEY (user_id),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id));
-	
+	password VARCHAR(80),
+PRIMARY KEY (user_id),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+ALTER TABLE users AUTO_INCREMENT=2000;
+
 CREATE TABLE cars (
 	registration VARCHAR(15) NOT NULL,
 	account_id INT NOT NULL,
-	make VARCHAR(15),
-	model VARCHAR(15),
-	colour VARCHAR(10),
-	PRIMARY KEY (registration),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id));
-	
+PRIMARY KEY (registration),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+
 CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT NOT NULL,
 	account_id INT NOT NULL,
+	name_on_card VARCHAR(30),
 	card_number BIGINT,
 	card_expiry VARCHAR(5),
 	ccv INT,
-	PRIMARY KEY (card_number),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+PRIMARY KEY (payment_id),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+ALTER TABLE payments AUTO_INCREMENT=3000;
 
 CREATE TABLE transaction_history (
 	transaction_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
 	date_time TIMESTAMP,
-	location_id INT NOT NULL,
+	location_id VARCHAR(8) NOT NULL,
 	cost DOUBLE(4,2),
-	PRIMARY KEY (transaction_id),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-	FOREIGN KEY (location_id) REFERENCES locations(location_id));
-	
-CREATE TABLE entry_exit (
-	entry_exit_id INT NOT NULL AUTO_INCREMENT,
+PRIMARY KEY (transaction_id),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+FOREIGN KEY (location_id) REFERENCES locations(location_id));
+ALTER TABLE transaction_history AUTO_INCREMENT=4000;
+
+CREATE TABLE car_entry (
+	entry_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
-	date_time TIMESTAMP,
 	registration VARCHAR(15) NOT NULL,
-	registration_image VARCHAR(25),
-	PRIMARY KEY (entry_exit_id),
-	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-	FOREIGN KEY (registration) REFERENCES cars(registration));
-	
-	
+	image VARCHAR(25),
+	date_time TIMESTAMP,
+PRIMARY KEY (entry_id),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+FOREIGN KEY (registration) REFERENCES cars(registration));
+ALTER TABLE car_entry AUTO_INCREMENT=5000;
 
-INSERT INTO accounts VALUES(1, 0); #--Query can be entered normally without column names
-INSERT INTO accounts (account_balance) VALUES(5); #--Using auto increment
-INSERT INTO accounts (account_id, account_balance) VALUES(3, 3.50); #--Query can be entered normally with column names
-
-INSERT INTO locations VALUES(1, "DkIT PJCarrolls", 400, 30);
-INSERT INTO locations (location_name, total_spaces, available_spaces) VALUES("DkIT PJCarrolls Rear", 60, 5); #--Using auto increment
-
-INSERT INTO users VALUES(1, 1, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie");
-INSERT INTO users VALUES(2, 1, "d00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie");
-INSERT INTO users VALUES(3, 2, "d00197352", "Brian McKenna", "d00197352@student.dkit.ie");
-INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(2, "DkIT", "Jacqueline O'Connor", "d00230552@student.dkit.ie");
-INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
-
-INSERT INTO cars VALUES("161LH12345", 1, "Nissan", "Micra", "Silver");
-INSERT INTO cars VALUES("142LH54321", 1, "Skoda", "Octavia", "Red");
-INSERT INTO cars VALUES("212LH678", 2, "Audi", "A6", "Black");
-INSERT INTO cars VALUES("11MH345", 2, "Toyota", "Corolla", "Blue");
-INSERT INTO cars VALUES("10D9393", 3, "Ford", "Focus", "Grey");
-INSERT INTO cars VALUES("05C2929", 3, "Honda", "Civic", "Silver");
-
-INSERT INTO payments VALUES(1, "1234567812345678", "12/24", "123");
-INSERT INTO payments VALUES(2, "8765432187654321", "12/24", "321");
-INSERT INTO payments VALUES(3, "1234567887654321", "12/24", "312");
-
-INSERT INTO transaction_history VALUES(1, 1, "2021-11-03 23:59:59", 1, 4.00);
-INSERT INTO transaction_history VALUES(2, 2, "2021-11-04 23:59:59", 2, 2.00);
-INSERT INTO transaction_history VALUES(3, 3, "2021-11-04 23:59:59", 1, 2.00);
-
-INSERT INTO entry_exit VALUES(1, 1, "2021-11-03 09:00:00", "161LH12345", "0001.png");
-INSERT INTO entry_exit VALUES(2, 1, "2021-11-03 09:00:00", "142LH54321", "0002.png");
-INSERT INTO entry_exit VALUES(3, 1, "2021-11-03 17:00:00", "161LH12345", "0003.png");
-INSERT INTO entry_exit VALUES(4, 1, "2021-11-03 17:00:00", "142LH54321", "0004.png");
+CREATE TABLE car_exit (
+	exit_id INT NOT NULL AUTO_INCREMENT,
+	account_id INT NOT NULL,
+	registration VARCHAR(15) NOT NULL,
+	image VARCHAR(25),
+	date_time TIMESTAMP,
+PRIMARY KEY (exit_id),
+FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+FOREIGN KEY (registration) REFERENCES cars(registration));
+ALTER TABLE car_exit AUTO_INCREMENT=6000;
 
 
-INSERT INTO entry_exit VALUES(5, 2, "2021-11-04 09:00:00", "212LH678", "0005.png");
-INSERT INTO entry_exit VALUES(6, 2, "2021-11-04 17:00:00", "212LH678", "0006.png");
+INSERT INTO accounts VALUES(1000, 0);
+INSERT INTO accounts (account_balance) VALUES(5);
+INSERT INTO accounts (account_id, account_balance) VALUES(1003, 3.50);
+INSERT INTO accounts (account_balance) VALUES(15.00);
+INSERT INTO accounts (account_balance) VALUES(7.50);
+INSERT INTO accounts VALUES(1002, 3.50);
 
-INSERT INTO entry_exit VALUES(7, 3, "2021-11-04 09:00:00", "10D9393", "0007.png");
-INSERT INTO entry_exit VALUES(8, 3, "2021-11-04 17:00:00", "05C2929", "0008.png");
 
-#--Test Queries
+INSERT INTO locations VALUES
+("DKPJF256", "DkIT PJCarrolls Front", 400, 30),
+("DKPJB652", "DkIT PJCarrolls Rear", 60, 5);
 
-#--User Registration
-INSERT INTO accounts (account_balance) VALUES(0); 
-INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
+INSERT INTO users VALUES
+(2000, 1000, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie", "password1"),
+(2001, 1005, "D00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie", "password2"),
+(2002, 1004, "D00197352", "Brian McKenna", "d00197352@student.dkit.ie", "password3"),
+(2003, 1003, "D00230552", "Jacqueline O'Connor", "d00230552@student.dkit.ie", "password4");
 
-#--User Login
-SELECT *
-FROM users JOIN accounts USING (account_id)
-WHERE users(email_address)
+INSERT INTO cars VALUES
+("161LH12345", 1000),
+("142LH54321", 1004),
+("212LH678", 1003),
+("11MH345", 1005),
+("10D9393", 1002);
 
-#--Add car
-SELECT 
-INSERT INTO cars VALUES("161LH12345", 1, "Nissan", "Micra", "Silver");
+INSERT INTO payments VALUES
+(3001, 1000, "Conor McGuire", "1234567812345678", "12/24", "123"),
+(3002, 1005, "Kamil Jozefowicz", "8765432187654321", "12/24", "321"),
+(3003, 1002, "Brian McKenna", "1234567887654321", "12/24", "312");
 
-#--Add User
-INSERT INTO users (account_id, college_id, full_name, email_address) VALUES(3, "DkIT", "Fred Vradkar", "fvradkar@dkit.ie");
+INSERT INTO transaction_history VALUES
+(4000, 1004, "2021-11-03 23:59:59", "DKPJF256", 10.00),
+(4001, 1005, "2021-11-04 23:59:59", "DKPJF256", 5.00),
+(4002, 1002, "2021-11-04 23:59:59", "DKPJB652", 2.00);
 
-#--Edit User
+INSERT INTO car_entry VALUES
+(5000, 1000, "161LH12345", "0001.png", "2021-11-03 09:00:00"),
+(5001, 1005, "11MH345", "0003.png", "2021-11-03 09:00:00"),
+(5002, 1002, "10D9393", "0005.png", "2021-11-04 09:00:00"),
+(5003, 1003, "212LH678", "0007.png", "2021-11-04 09:00:00"),
+(5004, 1004, "142LH54321", "0008.png", "2021-11-04 17:00:00");
 
-#--Edit Car
-
-#--Edit Payment
-
-#--Check transaction history (user)
-
-#--Check entry exit (user)
-
-#--Car enters (Reg)
-
-#--Car enters(Student id)
-
-#--Car enters (Ticket)
-
-#--Car Exits (Student id)
-
-#--Car Exits (Ticket)
-
-#--Car Exits  (Reg)
-
-#--Delete Account
-
-#-- Delete User
+INSERT INTO car_exit VALUES
+(6000, 1000, "161LH12345", "0011.png", "2021-11-03 17:00:00"),
+(6001, 1005, "11MH345", "0033.png", "2021-11-03 17:00:00"),
+(6002, 1002, "10D9393", "0066.png", "2021-11-04 17:00:00");
