@@ -20,8 +20,8 @@ sensors = ["camera", "barcode"]
 data = {}
 
 pnconfig = PNConfiguration()
-pnconfig.subscribe_key = 'pub-c-d97bac76-5913-453f-80ac-3df34c710585'
-pnconfig.publish_key = 'sub-c-e973009a-4250-11ec-96b3-4a48f5067549'
+pnconfig.subscribe_key = ''
+pnconfig.publish_key = ''
 pnconfig.uuid = 'a4009a03-48a7-4742-a3b0-6969bf1ae10e'
 pubnub = PubNub(pnconfig)
 
