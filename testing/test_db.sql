@@ -128,4 +128,48 @@ INSERT INTO car_exit VALUES
 
 
 
-#--Test Queries TODO
+-- TEST QUERIES
+
+-- Register user -
+-- Create account with 0.00 balance
+INSERT INTO accounts(account_balance) VALUES(0);
+
+-- Use this query to put into a variable and place into users table when creating a user?
+SELECT account_id FROM accounts ORDER BY account_id DESC LIMIT 1;
+
+-- TODO - add account id
+INSERT INTO users VALUES(account_id, full_name, email_address, password)
+("Tom Ford", "d00235552@student.dkit.ie", "password24");
+
+
+-- Login
+-- In database
+SELECT * FROM users WHERE email_address = "d00235552@student.dkit.ie"
+AND password = "password24";
+
+-- Not in database
+SELECT * FROM users WHERE email_address = "d00235552@dkit.ie"
+AND password = "password24";
+
+
+-- Manage car details
+INSERT INTO cars
+
+
+
+-- Add car details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
