@@ -1,69 +1,79 @@
-import pytesseract
 import cv2
-import os
 import matplotlib.pyplot as plt
+import pytesseract
 
-import glob
+# Set tesseract path to where the tesseract exe file is located (Edit this path accordingly based on your own settings)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
-reg_plate_data = cv2.CascadeClassifier('haarcascade_russian_plate_number.xml')
 
 # Read car image and convert color to RGB
-#image = cv2.imread('/briancar.jpg')
+carplate_img = cv2.imread('briancar2.jpg')
+carplate_img_rgb = cv2.cvtColor(carplate_img, cv2.COLOR_BGR2RGB)
+
+plt.imshow(carplate_img_rgb)
 
 
-def plt_show(image, title="", gray = False, size=(100,100)):
-    temp = image
-    if gray == False:
-        temp = cv2.cvtColor(temp, cv2.COLOR_BGR2RGB)
-        plt.title(title)
-        plt.imshow(temp, cmap='gray')
-        plt.show()
+# Function to enlarge the plt display for user to view more clearly
+def enlarge_plt_display(image, scale_factor):
+    width = int(image.shape[1] * scale_factor / 100)
+    height = int(image.shape[0] * scale_factor / 100)
+    dim = (width, height)
+    plt.figure(figsize = dim)
+    plt.axis('off')
+    plt.imshow(image)
 
 
-def detect_number(img):
-    temp = img
-    gray = cv2.cvtColor(temp, cv2.COLOR_BGR2GRAY)
-    number = reg_plate_data.detectMultiScale(img,1.2)
-    print("number plate detected:"+str(len(number)))
-    for numbers in number:
-        (x,y,w,h) = numbers
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color = img[y:y+h, x:x+h]
-        cv2.rectangle(temp, (x,y), (x+w,y+h), (0,0,255), 5)
-
-    plt_show(temp)
+enlarge_plt_display(carplate_img_rgb, 1.2)
 
 
-img = cv2.imread("briancar.jpg")
-#plt_show(img)
-detect_number(img)
+# Import Haar Cascade XML file for Russian car plate numbers
+carplate_haar_cascade = cv2.CascadeClassifier('haarcascade_russian_plate_number.xml')
 
 
-#detected_carplate_img = carplate_detect(carplate_img_rgb)
-#plt.imshow(detected_carplate_img)
-#pytesseract.pytesseract.tesseract_cmd
+# Setup function to detect car plate
+def carplate_detect(image):
+    carplate_overlay = image.copy()  # Create overlay to display red rectangle of detected car plate
+    carplate_rects = carplate_haar_cascade.detectMultiScale(carplate_overlay, scaleFactor=1.1, minNeighbors=5)
 
-#print(pytesseract.image_to_string(r'car.png'))
+    for x, y, w, h in carplate_rects:
+        cv2.rectangle(carplate_overlay, (x, y), (x + w, y + h), (255, 0, 0), 5)
 
-"""
-test_license_plate = cv2.imread(os.getcwd() + "/briancar.jpg")
-plt.imshow(test_license_plate)
-plt.axis('off')
+    return carplate_overlay
 
-resize_test_license_plate = cv2.resize(
-    test_license_plate, None, fx = 2, fy = 2,
-    interpolation = cv2.INTER_CUBIC)
 
-grayscale_resize_test_license_plate = cv2.cvtColor(
-    resize_test_license_plate, cv2.COLOR_BGR2GRAY)
+detected_carplate_img = carplate_detect(carplate_img_rgb)
+enlarge_plt_display(detected_carplate_img, 1.2)
 
-gaussian_blur_license_plate = cv2.GaussianBlur(
-    grayscale_resize_test_license_plate, (5, 5), 0)
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
-img = cv2.imread('reg.jpg')
-#img = cv2.resize(img, (600, 360))
-print(pytesseract.image_to_string(gaussian_blur_license_plate, lang ='eng', config ='--oem 3 -l eng --psm 6 -c tessedit_char_whitelist=ACDEGHJKLMNOQRSTUVWXY123456789'))
-#cv2.imshow('',grayscale_resize_test_license_plate)
-#cv2.waitKey(0)
-"""
+# Function to retrieve only the car plate sub-image itself
+def carplate_extract(image):
+    carplate_rects = carplate_haar_cascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5)
+
+    for x, y, w, h in carplate_rects:
+        carplate_img = image[y + 15:y + h - 10, x + 15:x + w - 20]
+
+    return carplate_img
+
+
+# Enlarge image for further image processing later on
+def enlarge_img(image, scale_percent):
+    width = int(image.shape[1] * scale_percent / 100)
+    height = int(image.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    resized_image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+    return resized_image
+
+
+# Display extracted car license plate image
+carplate_extract_img = carplate_extract(carplate_img_rgb)
+carplate_extract_img = enlarge_img(carplate_extract_img, 150)
+cv2.imshow('test',carplate_extract_img)
+cv2.waitKey(0)
+
+carplate_extract_img_gray = cv2.cvtColor(carplate_extract_img, cv2.COLOR_RGB2GRAY)
+
+# Apply median blur + grayscale
+carplate_extract_img_gray_blur = cv2.medianBlur(carplate_extract_img_gray,3) # Kernel size 3
+
+print(pytesseract.image_to_string(carplate_extract_img_gray_blur,
+                                  config = f'--psm 8 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'))
