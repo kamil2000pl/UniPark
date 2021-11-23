@@ -61,8 +61,7 @@ def register():
 
         # Check if email already exists in db
         value = (email,)
-        query = ("SELECT * FROM accounts "
-                 "WHERE email_address = %s")
+        query = "SELECT * FROM accounts WHERE email_address = %s"
 
         cursor.execute(query, value)
         check_email = cursor.fetchone()
@@ -87,8 +86,6 @@ def register():
             cursor.close()
             cnx.close()
 
-            flash('the task created ', 'success')
-
         return redirect(url_for("login"))
     else:
         return render_template("register.html", form=form)
@@ -103,29 +100,18 @@ def login():
         email = form.inputEmail.data
         password = form.inputPassword.data
 
-        # Check if email already exists in db
-        # might need to check password hash here will test later
+        account_query = "SELECT * FROM accounts WHERE email_address = %s"
+        values = (email,)
+        cursor.execute(account_query, values)
+        account = cursor.fetchone()
+        account_password = account[3]
 
-        # TO DO - FIX HERE - NEED TO FIGURE OUT PASSWORD HASH CHECK AND HOW TO PASS VALUES AFTER USER LOGS IN
-
-        # *******
-        values = (email, password)
-        query = ("SELECT * FROM users "
-                 "WHERE email_address = %s AND password = %s")
-
-        cursor.execute(query, values)
-        check_account = cursor.fetchone()
-        # *******
-
-        # cur.execute("SELECT * FROM users WHERE email_address = %s AND password = %s", email, password)
-        # check_account = cur.fetchone()
-
-        if check_account:
+        if not account or not check_password_hash(account_password, password):
+            msg = "Incorrect Details"
+            return render_template("login.html", form=form)
+        else:
             msg = "Logged in successfully"
             return redirect(url_for("user_dashboard"))
-        else:
-            msg = "Incorrect Details"
-            return redirect(url_for("index"))
     else:
         return render_template("login.html", form=form)
 
