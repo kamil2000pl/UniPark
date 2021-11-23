@@ -10,7 +10,7 @@
     </div>
 {% endmacro %}
 
-{% macro user_dashboard_section() %}
+{% macro user_dashboard_section(account) %}
     <div class="container user-dashboard-container">
         <a href="{{ url_for('logout')}}">Click To Logout</a>
         <div class="row m-auto justify-content-center">

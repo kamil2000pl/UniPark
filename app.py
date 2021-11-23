@@ -120,7 +120,16 @@ def logout():
 
 @app.route('/dashboard')
 def user_dashboard():
-    return render_template("user_dashboard.html")
+    # check if user is logged in
+
+    if 'loggedin' in session:
+        account_query = "SELECT * FROM accounts WHERE account_id = %s"
+        values = (session['id'],)
+        cursor.execute(account_query, values)
+        account = cursor.fetchone()
+        print(account)
+        return render_template("user_dashboard.html", account=account)
+    return redirect(url_for('login'))
 
 
 @app.route('/user_manage_account')
