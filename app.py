@@ -70,11 +70,17 @@ def register():
         if check_email:
             msg = "Email already exists"
         else:
-            add_user = ("INSERT INTO users"
-                        "(full_name, email_address, password) "
-                        "VALUES (%s, %s, %s)")
 
-            user_data = (fullname, email, password)
+            add_account = ("INSERT into accounts(account_balance) values(%s)")
+            account_data = (0.00,)
+            cursor.execute(add_account, account_data)
+            account_id = cursor.lastrowid
+
+            add_user = ("INSERT INTO users"
+                        "(full_name, email_address, password, account_id) "
+                        "VALUES (%s, %s, %s, %s)")
+
+            user_data = (fullname, email, password, account_id)
             # Execute
             cursor.execute(add_user, user_data)
             # Commit to DB
