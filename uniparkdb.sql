@@ -7,7 +7,7 @@ CREATE TABLE accounts (
 	account_id INT AUTO_INCREMENT NOT NULL,
 	account_balance DOUBLE(4, 2),
 	email_address VARCHAR(30),
-	password VARCHAR(80),
+	password VARCHAR(120),
     PRIMARY KEY (account_id));
     ALTER TABLE accounts AUTO_INCREMENT=1000;
 

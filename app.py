@@ -61,26 +61,24 @@ def register():
 
         # Check if email already exists in db
         value = (email,)
-        query = ("SELECT * FROM users "
+        query = ("SELECT * FROM accounts "
                  "WHERE email_address = %s")
 
         cursor.execute(query, value)
         check_email = cursor.fetchone()
 
-        if check_email:
+        if check_email:  # if the email already exists
             msg = "Email already exists"
-        else:
-
-            add_account = ("INSERT into accounts(account_balance) values(%s)")
-            account_data = (0.00,)
+            print(msg)
+        else:  # if the email does not exist we can then proceed to adding the account
+            add_account = "INSERT INTO accounts(account_balance, email_address, password) VALUES (%s, %s, %s)"  # account id auto created and incremented
+            account_data = (0.00, email, password)
+            print(account_data)
             cursor.execute(add_account, account_data)
-            account_id = cursor.lastrowid
+            account_id = cursor.lastrowid  # gets the account id
 
-            add_user = ("INSERT INTO users"
-                        "(full_name, email_address, password, account_id) "
-                        "VALUES (%s, %s, %s, %s)")
-
-            user_data = (fullname, email, password, account_id)
+            add_user = "INSERT INTO users (account_id, college_id, full_name) VALUES (%s, %s, %s)"
+            user_data = (account_id, "", fullname)  # college_id need a default value?
             # Execute
             cursor.execute(add_user, user_data)
             # Commit to DB
