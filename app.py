@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
-import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
@@ -8,7 +7,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
-registeredUser = {}
 
 config = {
     'user': 'brian',
@@ -46,10 +44,8 @@ def index():
     return render_template("index.html")
 
 
-# FIX HERE
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    msg = ""
     form = RegisterForm(request.form)
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -84,7 +80,6 @@ def register():
             cnx.commit()
             # Close Cursor & connection
             cursor.close()
-            cnx.close()
 
         return redirect(url_for("login"))
     else:
@@ -93,7 +88,6 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    msg = ""
     form = LoginForm(request.form)
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -104,19 +98,27 @@ def login():
         values = (email,)
         cursor.execute(account_query, values)
         account = cursor.fetchone()
-        account_password = account[3]
 
-        if not account or not check_password_hash(account_password, password):
-            msg = "Incorrect Details"
+        if not account or not check_password_hash(account[3], password):
+            msg = "Unsuccessful Login!"
             return render_template("login.html", form=form)
         else:
             msg = "Logged in successfully"
+            session['loggedin'] = True
+            session['id'] = account[0]
             return redirect(url_for("user_dashboard"))
     else:
         return render_template("login.html", form=form)
 
 
-@app.route('/user')
+@app.route('/logout', methods=["GET", "POST"])
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
 def user_dashboard():
     return render_template("user_dashboard.html")
 
