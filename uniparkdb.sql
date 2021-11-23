@@ -6,33 +6,33 @@ DROP TABLE IF EXISTS car_entry, car_exit, transaction_history, payments, cars, u
 CREATE TABLE accounts (
 	account_id INT AUTO_INCREMENT NOT NULL,
 	account_balance DOUBLE(4, 2),
-PRIMARY KEY (account_id));
-ALTER TABLE accounts AUTO_INCREMENT=1000;
+	email_address VARCHAR(30),
+	password VARCHAR(80),
+    PRIMARY KEY (account_id));
+    ALTER TABLE accounts AUTO_INCREMENT=1000;
 
 CREATE TABLE locations (
 	location_id VARCHAR(8) NOT NULL,
 	location_name VARCHAR(30),
 	total_spaces INT,
 	available_spaces INT,
-PRIMARY KEY (location_id));
+    PRIMARY KEY (location_id));
 
--- TODO - hashing algorithm for password
+
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
 	college_id VARCHAR(10),
 	full_name VARCHAR(30),
-	email_address VARCHAR(30),
-	password VARCHAR(80),
-PRIMARY KEY (user_id),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id));
-ALTER TABLE users AUTO_INCREMENT=2000;
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+    ALTER TABLE users AUTO_INCREMENT=2000;
 
 CREATE TABLE cars (
 	registration VARCHAR(15) NOT NULL,
 	account_id INT NOT NULL,
-PRIMARY KEY (registration),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+    PRIMARY KEY (registration),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id));
 
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT NOT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE payments (
 	card_number BIGINT,
 	card_expiry VARCHAR(5),
 	ccv INT,
-PRIMARY KEY (payment_id),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id));
-ALTER TABLE payments AUTO_INCREMENT=3000;
+    PRIMARY KEY (payment_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id));
+    ALTER TABLE payments AUTO_INCREMENT=3000;
 
 CREATE TABLE transaction_history (
 	transaction_id INT NOT NULL AUTO_INCREMENT,
@@ -51,10 +51,10 @@ CREATE TABLE transaction_history (
 	date_time TIMESTAMP,
 	location_id VARCHAR(8) NOT NULL,
 	cost DOUBLE(4,2),
-PRIMARY KEY (transaction_id),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-FOREIGN KEY (location_id) REFERENCES locations(location_id));
-ALTER TABLE transaction_history AUTO_INCREMENT=4000;
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (location_id) REFERENCES locations(location_id));
+    ALTER TABLE transaction_history AUTO_INCREMENT=4000;
 
 CREATE TABLE car_entry (
 	entry_id INT NOT NULL AUTO_INCREMENT,
@@ -62,10 +62,10 @@ CREATE TABLE car_entry (
 	registration VARCHAR(15) NOT NULL,
 	image VARCHAR(25),
 	date_time TIMESTAMP,
-PRIMARY KEY (entry_id),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-FOREIGN KEY (registration) REFERENCES cars(registration));
-ALTER TABLE car_entry AUTO_INCREMENT=5000;
+    PRIMARY KEY (entry_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (registration) REFERENCES cars(registration));
+    ALTER TABLE car_entry AUTO_INCREMENT=5000;
 
 CREATE TABLE car_exit (
 	exit_id INT NOT NULL AUTO_INCREMENT,
@@ -73,18 +73,18 @@ CREATE TABLE car_exit (
 	registration VARCHAR(15) NOT NULL,
 	image VARCHAR(25),
 	date_time TIMESTAMP,
-PRIMARY KEY (exit_id),
-FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-FOREIGN KEY (registration) REFERENCES cars(registration));
-ALTER TABLE car_exit AUTO_INCREMENT=6000;
+    PRIMARY KEY (exit_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (registration) REFERENCES cars(registration));
+    ALTER TABLE car_exit AUTO_INCREMENT=6000;
 
 
-INSERT INTO accounts VALUES(1000, 0);
-INSERT INTO accounts (account_balance) VALUES(5);
-INSERT INTO accounts (account_id, account_balance) VALUES(1003, 3.50);
+INSERT INTO accounts VALUES(1000, 0, "d00230552@student.dkit.ie", "password1");
+INSERT INTO accounts (account_balance, email_address, password) VALUES(5, "d00229452@student.dkit.ie", "password2");
+INSERT INTO accounts (account_id, account_balance, email_address, password) VALUES(1003, 3.50, "d00197352@student.dkit.ie", "password3");
 INSERT INTO accounts (account_balance) VALUES(15.00);
 INSERT INTO accounts (account_balance) VALUES(7.50);
-INSERT INTO accounts VALUES(1002, 3.50);
+INSERT INTO accounts VALUES(1002, 3.50, "d00230552@student.dkit.ie", "password4");
 
 
 INSERT INTO locations VALUES
@@ -92,10 +92,10 @@ INSERT INTO locations VALUES
 ("DKPJB652", "DkIT PJCarrolls Rear", 60, 5);
 
 INSERT INTO users VALUES
-(2000, 1000, "D00230552", "Conor McGuire", "d00230552@student.dkit.ie", "password1"),
-(2001, 1005, "D00229452", "Kamil Jozefowicz", "d00229452@student.dkit.ie", "password2"),
-(2002, 1004, "D00197352", "Brian McKenna", "d00197352@student.dkit.ie", "password3"),
-(2003, 1003, "D00230552", "Jacqueline O'Connor", "d00230552@student.dkit.ie", "password4");
+(2000, 1000, "D00230552", "Conor McGuire"),
+(2001, 1005, "D00229452", "Kamil Jozefowicz"),
+(2002, 1004, "D00197352", "Brian McKenna"),
+(2003, 1003, "D00230552", "Jacqueline O'Connor");
 
 INSERT INTO cars VALUES
 ("161LH12345", 1000),
