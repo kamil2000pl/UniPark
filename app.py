@@ -18,7 +18,7 @@ config = {
 }
 
 cnx = mysql.connector.connect(**config)
-cursor = cnx.cursor()
+cursor = cnx.cursor(buffered=True)
 
 
 # Forms
@@ -98,6 +98,7 @@ def login():
         values = (email,)
         cursor.execute(account_query, values)
         account = cursor.fetchone()
+        print(account)
 
         if not account or not check_password_hash(account[3], password):
             msg = "Unsuccessful Login!"
@@ -111,10 +112,18 @@ def login():
         return render_template("login.html", form=form)
 
 
+# Ensure responses aren't cached
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
+
+
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
+    session.clear()
     return redirect(url_for('login'))
 
 
@@ -128,7 +137,7 @@ def user_dashboard():
         cursor.execute(account_query, values)
         account = cursor.fetchone()
         print(account)
-        return render_template("user_dashboard.html", account=account)
+        return render_template("user_dashboard.html", account=account, session=session)
     return redirect(url_for('login'))
 
 

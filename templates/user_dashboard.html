@@ -6,10 +6,8 @@
 {% endblock %}
 
 {% block page_head_section %}
-    {{ page_head_section("Welcome " + account[0]|string) }}
+    {{ page_head_section("Welcome " + account[2]|string) }}
 {% endblock %}
-
-
 
 {% block user_dashboard_section %}
     {{ user_dashboard_section(account) }}

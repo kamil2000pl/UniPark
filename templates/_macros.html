@@ -1,5 +1,28 @@
 {# MACROS FOR COMPONENTS #}
 
+{% macro navbar_section(session) %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><span class="unipark-unispan">UNI</span>PARK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link {{ 'active' if active_page == '/' else '' }}" href="/">Home</a>
+                    {% if session['loggedin'] %}
+                        <a class="nav-link {{ 'active' if active_page == 'user_dashboard' else '' }}" href="{{ url_for('user_dashboard')}}">Dashboard</a>
+                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                    {% else %}
+                        <a class="nav-link {{ 'active' if active_page == 'register' else '' }}" href="{{ url_for('register')}}">Register</a>
+                        <a class="nav-link {{ 'active' if active_page == 'login' else '' }}" href="{{ url_for('login')}}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endmacro %}
+
 {% macro page_head_section(text) %}
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -12,7 +35,6 @@
 
 {% macro user_dashboard_section(account) %}
     <div class="container user-dashboard-container">
-        <a href="{{ url_for('logout')}}">Click To Logout</a>
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
                 <div class="col-12 border bg-main">
@@ -47,7 +69,7 @@
                         </div>
                         <div class="col-12">
                             <div class="fst-italic">Current Balance:</div>
-                            <div class="fst-italic fw-bold fs-1">€0.00</div>
+                            <div class="fst-italic fw-bold fs-1">€{{ "%.2f"|format(account[1]) }}</div>
                         </div>
                     </div>
                 </div>
@@ -230,7 +252,7 @@
                     <div class="display-5">
                         Current Balance
                     </div>
-                     <div class="display-4 fw-bolder fst-italic">
+                    <div class="display-4 fw-bolder fst-italic">
                         €0.00
                     </div>
                 </div>
