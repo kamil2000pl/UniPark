@@ -6,6 +6,9 @@
             <a class="navbar-brand" href="/"><span class="unipark-unispan">UNI</span>PARK</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
+                {% if session['loggedin'] %}
+                    Logged in
+                {% endif %}
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
@@ -205,8 +208,9 @@
                     <div class="p-4">
                         {% if car is none %}
                             <div class="display-5 mb-4 text-center text-white">
-                                You must add a car
-                            </div>
+                            You must add a car
+                            <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                        </div>
                         {% else %}
                             <div class="display-5 mb-4 text-center text-white">
                                 Current Vehicles
