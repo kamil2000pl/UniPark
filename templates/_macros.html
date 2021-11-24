@@ -113,18 +113,19 @@
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                    {% if user[2] == "" or  user[2] == None %}
-                        <div class="col-12">
-                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                        </div>
+                        {% if user[2] == "" or  user[2] == None %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
                         {% endif %}
                         <div class="col-12">
                             <div class="h3">Manage Account</div>
                         </div>
-                            <div class="col-12">
-                                <i class="bi bi-person-circle dashboard-icon"></i>
-                            </div>
+                        <div class="col-12">
+                            <i class="bi bi-person-circle dashboard-icon"></i>
+                        </div>
                     </div>
+                    {# make sure position-relative is in container class #}
                     <a href="{{ url_for('user_manage_account')}}" class="stretched-link"></a>
                 </div>
             </div>
@@ -132,7 +133,7 @@
     </div>
 {% endmacro %}
 
-{% macro user_manage_account_section(account, user) %}
+{% macro user_manage_account_section(account, user, car) %}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row">
@@ -147,11 +148,13 @@
                     </div>
                 </div>
 
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        <div class="col-12">
-                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                        </div>
+                        {% if car is none %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                        {% endif %}
                         <div class="col-12">
                             <div class="h3">Car Details</div>
                         </div>
@@ -159,6 +162,8 @@
                             <i class="fa fa-car dashboard-icon"></i>
                         </div>
                     </div>
+                    {# make sure position-relative is in container class #}
+                    <a href="{{ url_for('user_manage_car')}}" class="stretched-link"></a>
                 </div>
             </div>
 
@@ -192,24 +197,30 @@
     </div>
 {% endmacro %}
 
-{% macro user_manage_car_section() %}
+{% macro user_manage_car_section(car) %}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
                 <div class="col-12 border bg-main">
                     <div class="p-4">
-                        <div class="display-5 mb-4 text-center text-white">
-                            Current Vehicles
-                        </div>
-                        <p class="lead fst-italic text-center">Add up to three vehicles per account</p>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Car 1
-                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Car 2
-                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
-                            </li>
-                        </ul>
+                        {% if car is none %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                You must add a car
+                            </div>
+                        {% else %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                Current Vehicles
+                            </div>
+                            <p class="lead fst-italic text-center">Add up to three vehicles per account</p>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">Car 1
+                                    <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">Car 2
+                                    <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                                </li>
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -222,6 +233,8 @@
                     <div class="mb-3 col-12">
                         <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" aria-describedby="vehicleReg">
                     </div>
+                    {# must create a route for adding a car to the db e.g @app.route('/user_manage_car/add_car')#}
+                    {# https://stackoverflow.com/questions/49266409/button-click-in-html-to-update-sqlalchemy-db-in-flask #}
                     <div class="mb-3 col-12">
                         <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
                     </div>

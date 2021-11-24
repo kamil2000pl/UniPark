@@ -142,13 +142,22 @@ def user_manage_account():
     if 'loggedin' in session:
         account = get_account_details()
         user = get_user_details()
-        return render_template("user_manage_account.html", account=account, session=session, user=user)
+        car = get_car_details()
+        return render_template("user_manage_account.html", account=account, session=session, user=user, car=car)
     return redirect(url_for('login'))
 
 
 @app.route('/user_manage_car')
 def user_manage_car():
-    return render_template("user_manage_car.html")
+    if 'loggedin' in session:
+        car = get_car_details()
+        return render_template("user_manage_car.html", car=car)
+    return redirect(url_for('login'))
+
+
+@app.route('/user_manage_car/add_car')
+def user_add_car():
+    return redirect(url_for('login'))
 
 
 @app.route('/user_card_payment_details')
@@ -181,6 +190,18 @@ def get_user_details():
     user = cursor.fetchone()
     return user
 
+
+def get_car_details():
+    user_query = "SELECT * FROM cars WHERE account_id = %s"
+    values = (session['id'],)
+    cursor.execute(user_query, values)
+    # fetch one car atm
+    car_details = cursor.fetchone()
+    print(car_details)
+    return car_details
+
+
+# create a function that will add car to the db
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
