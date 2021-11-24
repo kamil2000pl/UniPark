@@ -78,12 +78,12 @@ CREATE TABLE car_exit (
     ALTER TABLE car_exit AUTO_INCREMENT=6000;
 
 
-INSERT INTO accounts VALUES(1000, 0, "d00230552@student.dkit.ie", "password1");
-INSERT INTO accounts (account_balance, email_address, password) VALUES(5, "d00229452@student.dkit.ie", "password2");
-INSERT INTO accounts (account_id, account_balance, email_address, password) VALUES(1003, 3.50, "d00197352@student.dkit.ie", "password3");
+INSERT INTO accounts VALUES(1000, 0, "d00230552@student.dkit.ie", "sha256$t9IJqsQidBrL50b6$79dbd976e97e250a6847e6cd71fb95fbdf6a5f7833db6cd5ce4e93137c8a65e5");
+INSERT INTO accounts (account_balance, email_address, password) VALUES(5, "d00229452@student.dkit.ie", "sha256$t9IJqsQidBrL50b6$79dbd976e97e250a6847e6cd71fb95fbdf6a5f7833db6cd5ce4e93137c8a65e5");
+INSERT INTO accounts (account_id, account_balance, email_address, password) VALUES(1003, 3.50, "d00197352@student.dkit.ie", "sha256$t9IJqsQidBrL50b6$79dbd976e97e250a6847e6cd71fb95fbdf6a5f7833db6cd5ce4e93137c8a65e5");
 INSERT INTO accounts (account_balance) VALUES(15.00);
 INSERT INTO accounts (account_balance) VALUES(7.50);
-INSERT INTO accounts VALUES(1002, 3.50, "d00230552@student.dkit.ie", "password4");
+INSERT INTO accounts VALUES(1002, 3.50, "d00230552@student.dkit.ie", "sha256$t9IJqsQidBrL50b6$79dbd976e97e250a6847e6cd71fb95fbdf6a5f7833db6cd5ce4e93137c8a65e5");
 
 
 INSERT INTO locations VALUES
