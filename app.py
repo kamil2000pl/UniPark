@@ -31,7 +31,8 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     inputFullName = StringField('Full Name', validators=[InputRequired(), Length(min=3)])
     inputEmail = StringField('Email Address', validators=[Email(), InputRequired(), Length(min=8)])
-    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8), EqualTo('inputPasswordRepeat', message='Passwords must match')])
+    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8), EqualTo('inputPasswordRepeat',
+                                                                                                  message='Passwords must match')])
     inputPasswordRepeat = PasswordField('Repeat Password')
     submit = SubmitField('Register')
 
@@ -129,21 +130,20 @@ def logout():
 
 @app.route('/dashboard')
 def user_dashboard():
-    # check if user is logged in
-
     if 'loggedin' in session:
-        account_query = "SELECT * FROM accounts WHERE account_id = %s"
-        values = (session['id'],)
-        cursor.execute(account_query, values)
-        account = cursor.fetchone()
-        print(account)
-        return render_template("user_dashboard.html", account=account, session=session)
+        account = get_account_details()
+        user = get_user_details()
+        return render_template("user_dashboard.html", account=account, session=session, user=user)
     return redirect(url_for('login'))
 
 
 @app.route('/user_manage_account')
 def user_manage_account():
-    return render_template("user_manage_account.html")
+    if 'loggedin' in session:
+        account = get_account_details()
+        user = get_user_details()
+        return render_template("user_manage_account.html", account=account, session=session, user=user)
+    return redirect(url_for('login'))
 
 
 @app.route('/user_manage_car')
@@ -164,6 +164,22 @@ def user_top_up_account():
 @app.route('/kiosk')
 def kiosk():
     return render_template("kiosk.html")
+
+
+def get_account_details():
+    account_query = "SELECT * FROM accounts WHERE account_id = %s"
+    values = (session['id'],)
+    cursor.execute(account_query, values)
+    account = cursor.fetchone()
+    return account
+
+
+def get_user_details():
+    user_query = "SELECT * FROM users WHERE account_id = %s"
+    values = (session['id'],)
+    cursor.execute(user_query, values)
+    user = cursor.fetchone()
+    return user
 
 
 if __name__ == '__main__':

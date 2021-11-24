@@ -33,7 +33,7 @@
     </div>
 {% endmacro %}
 
-{% macro user_dashboard_section(account) %}
+{% macro user_dashboard_section(account, user) %}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
@@ -44,6 +44,9 @@
                             <i class="bi bi-exclamation-circle-fill text-warning"></i>
                         </div>
                         <ul class="list-group">
+                            {% if account[1] < 2 %}
+                                <li class="list-group-item">Top up your account</li>
+                            {% endif %}
                             <li class="list-group-item">An item
                             </li>
                             <li class="list-group-item">A second item
@@ -58,12 +61,18 @@
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
                     <div class="row h-100 align-content-center text-center">
-                        <div class="col-6 text-end">
-                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
-                        </div>
-                        <div class="col-6 text-start">
-                            <i class="bi bi-wallet-fill dashboard-icon"></i>
-                        </div>
+                        {% if account[1] < 2 %}
+                            <div class="col-6 text-end">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                            <div class="col-6 text-start">
+                                <i class="bi bi-wallet-fill dashboard-icon"></i>
+                            </div>
+                        {% else %}
+                            <div class="col-12">
+                                <i class="bi bi-wallet-fill dashboard-icon"></i>
+                            </div>
+                        {% endif %}
                         <div class="col-12">
                             <div class="h3">Top Up Account</div>
                         </div>
@@ -101,25 +110,29 @@
                     </div>
                 </div>
 
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
+                    {% if user[2] == "" or  user[2] == None %}
                         <div class="col-12">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                         </div>
+                        {% endif %}
                         <div class="col-12">
                             <div class="h3">Manage Account</div>
                         </div>
-                        <div class="col-12">
-                            <i class="bi bi-person-circle dashboard-icon"></i>
-                        </div>
+                            <div class="col-12">
+                                <i class="bi bi-person-circle dashboard-icon"></i>
+                            </div>
                     </div>
+                    <a href="{{ url_for('user_manage_account')}}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro user_manage_account_section() %}
+{% macro user_manage_account_section(account, user) %}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row">
