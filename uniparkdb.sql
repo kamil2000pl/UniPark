@@ -59,12 +59,11 @@ CREATE TABLE transaction_history (
 CREATE TABLE car_entry (
 	entry_id INT NOT NULL AUTO_INCREMENT,
 	account_id INT NOT NULL,
-	registration VARCHAR(15) NOT NULL,
+	registration VARCHAR(15),
 	image VARCHAR(25),
 	date_time TIMESTAMP,
     PRIMARY KEY (entry_id),
-    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
-    FOREIGN KEY (registration) REFERENCES cars(registration));
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id));
     ALTER TABLE car_entry AUTO_INCREMENT=5000;
 
 CREATE TABLE car_exit (
