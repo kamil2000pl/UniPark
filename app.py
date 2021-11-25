@@ -159,25 +159,26 @@ def user_manage_car():
 @app.route('/user_manage_car/add_car', methods=["GET", "POST"])
 def user_add_car():
     vehicle_reg = request.form['vehicleReg']
-    print("vehicle_reg:")
-    print(vehicle_reg)
     if 'loggedin' in session:
         car_details = get_car_details()
-        print("*** here ***")
-        print("car_details:")
         print(car_details)
         # add cars
         account = get_account_details()
-        print("account_details:")
-        print(account)
         add_car(account[0], vehicle_reg)
-        print("vehicle_reg")
-        print(vehicle_reg)
-        return render_template("user_manage_car.html", vehicle_reg=vehicle_reg)
+        return redirect(url_for('user_manage_car'))
     return redirect(url_for('login'))
 
 
-# BUGGY CODE NEEDS TO BE FIXED
+@app.route('/user_manage_car/delete_car', methods=["GET", "POST"])
+def user_delete_car():
+    vehicle_reg = request.form['vehicle_reg']
+    if 'loggedin' in session:
+        delete_car = "DELETE FROM cars WHERE registration = %s"
+        values = (vehicle_reg,)
+        cursor.execute(delete_car, values)
+        cnx.commit()
+        return redirect(url_for('user_manage_car'))
+    return redirect(url_for('login'))
 
 
 @app.route('/user_card_payment_details')
@@ -228,14 +229,10 @@ def add_car(account_id, vehicle_reg):
     values = (vehicle_reg,)  # input from form on manage car details page
     cursor.execute(check_car_query, values)
     result = cursor.fetchone()
-    print("RESULT")
     print(result)
     if result[0] == 0:
-        print("got here after condition")
         insert_car = "INSERT INTO cars VALUES (%s, %s)"
         values = (vehicle_reg, account_id)
-        print("values got here")
-        print(values)
         cursor.execute(insert_car, values)
         # Commit to DB
         cnx.commit()
