@@ -208,9 +208,9 @@
                     <div class="p-4">
                         {% if car is none %}
                             <div class="display-5 mb-4 text-center text-white">
-                            You must add a car
-                            <i class="bi bi-exclamation-circle-fill text-warning"></i>
-                        </div>
+                                You must add a car
+                                <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                            </div>
                         {% else %}
                             <div class="display-5 mb-4 text-center text-white">
                                 Current Vehicles
@@ -234,14 +234,16 @@
                     <div class="display-5 mb-4 text-white">
                         Enter Vehicle Reg
                     </div>
-                    <div class="mb-3 col-12">
-                        <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" aria-describedby="vehicleReg">
-                    </div>
-                    {# must create a route for adding a car to the db e.g @app.route('/user_manage_car/add_car')#}
-                    {# https://stackoverflow.com/questions/49266409/button-click-in-html-to-update-sqlalchemy-db-in-flask #}
-                    <div class="mb-3 col-12">
-                        <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
-                    </div>
+                    <form action="{{ url_for('user_add_car') }}" method="POST">
+                        <div class="mb-3 col-12">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
+                        </div>
+                        {# must create a route for adding a car to the db e.g @app.route('/user_manage_car/add_car')#}
+                        {# https://stackoverflow.com/questions/49266409/button-click-in-html-to-update-sqlalchemy-db-in-flask #}
+                        <div class="mb-3 col-12">
+                            <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -318,5 +320,3 @@
         </div>
     </div>
 {% endmacro %}
-
-

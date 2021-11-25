@@ -155,9 +155,21 @@ def user_manage_car():
     return redirect(url_for('login'))
 
 
-@app.route('/user_manage_car/add_car')
+@app.route('/user_manage_car/add_car', methods=["GET", "POST"])
 def user_add_car():
+    vehicle_reg = request.form['vehicleReg']
+    print(vehicle_reg)
+    if 'loggedin' in session:
+        car_details = get_car_details()
+        print(car_details)
+        # if there is no car details we need to add car details for that user
+        if car_details is None:
+            account = get_account_details()
+            add_car(account[0], vehicle_reg)
+        return render_template("user_manage_car.html", vehicle_reg=vehicle_reg)
     return redirect(url_for('login'))
+
+# BUGGY CODE NEEDS TO BE FIXED
 
 
 @app.route('/user_card_payment_details')
@@ -197,11 +209,26 @@ def get_car_details():
     cursor.execute(user_query, values)
     # fetch one car atm
     car_details = cursor.fetchone()
-    print(car_details)
     return car_details
 
 
 # create a function that will add car to the db
+
+def add_car(account_id, vehicle_reg):
+    check_car_query = "SELECT COUNT(registration) FROM cars WHERE registration = %s"
+    values = (vehicle_reg,)  # input from form on manage car details page
+    cursor.execute(check_car_query, values)
+    car_details = cursor.fetchone()
+    cursor.close()
+    if car_details[0] == 0:
+        insert_car = "INSERT INTO cars VALUES (%s, %s)"
+        values = (vehicle_reg, account_id)
+        cursor.execute(insert_car, values)
+        # Commit to DB
+        cnx.commit()
+        # Close Cursor & connection
+        cursor.close()
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
