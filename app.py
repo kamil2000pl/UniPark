@@ -9,11 +9,20 @@ import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
 
+#config = {
+#    'user': 'brian',
+#    'password': 'brianmckenna',
+#    'host': 'localhost',
+#    'port': 8889,
+#    'database': 'uniparkdb',
+#    'raise_on_warnings': True,
+#}
+
 config = {
-    'user': 'brian',
-    'password': 'brianmckenna',
+    'user': 'root',
+    'password': '',
     'host': 'localhost',
-    'port': 8889,
+    'port': 3306,
     'database': 'uniparkdb',
     'raise_on_warnings': True,
 }
@@ -113,6 +122,7 @@ def login():
             return redirect(url_for("user_dashboard"))
     else:
         return render_template("login.html", form=form)
+    cursor.close()
 
 
 # Ensure responses aren't cached
@@ -159,7 +169,7 @@ def user_manage_car():
 
 @app.route('/user_manage_car/add_car', methods=["GET", "POST"])
 def user_add_car():
-    vehicle_reg = request.form['vehicleReg']
+    vehicle_reg = request.form['vehicleReg'].upper()
     if 'loggedin' in session:
         car_details = get_car_details()
         print(car_details)
