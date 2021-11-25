@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
@@ -193,6 +194,17 @@ def user_top_up_account():
 
 @app.route('/kiosk')
 def kiosk():
+    return render_template("kiosk.html")
+
+
+@app.route('/kiosk/print_ticket', methods=["GET", "POST"])
+def kiosk_print_ticket():
+    print_request = request.form['kiosk_print_ticket']
+    generate_datetime = datetime.datetime.now()
+    if print_request:
+        ticket_obj = generate_datetime
+        print(ticket_obj)
+        return render_template("kiosk.html", ticket_obj=ticket_obj)
     return render_template("kiosk.html")
 
 
