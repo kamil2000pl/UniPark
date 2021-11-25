@@ -9,11 +9,20 @@ import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
 
+#config = {
+#    'user': 'brian',
+#    'password': 'brianmckenna',
+#    'host': 'localhost',
+#    'port': 8889,
+#    'database': 'uniparkdb',
+#    'raise_on_warnings': True,
+#}
+
 config = {
-    'user': 'brian',
-    'password': 'brianmckenna',
+    'user': 'root',
+    'password': '',
     'host': 'localhost',
-    'port': 8889,
+    'port': 3306,
     'database': 'uniparkdb',
     'raise_on_warnings': True,
 }
@@ -59,7 +68,7 @@ def register():
 
         # Check if email already exists in db
         value = (email,)
-        query = "SELECT * FROM accounts WHERE email_address = %s"
+        query = "SELECT * FROM account WHERE email_address = %s"
 
         cursor.execute(query, value)
         check_email = cursor.fetchone()
@@ -68,13 +77,13 @@ def register():
             msg = "Email already exists"
             print(msg)
         else:  # if the email does not exist we can then proceed to adding the account
-            add_account = "INSERT INTO accounts(account_balance, email_address, password) VALUES (%s, %s, %s)"  # account id auto created and incremented
+            add_account = "INSERT INTO account(account_balance, email_address, password) VALUES (%s, %s, %s)"  # account id auto created and incremented
             account_data = (0.00, email, password)
             print(account_data)
             cursor.execute(add_account, account_data)
             account_id = cursor.lastrowid  # gets the account id
 
-            add_user = "INSERT INTO users (account_id, college_id, full_name) VALUES (%s, %s, %s)"
+            add_user = "INSERT INTO driver (account_id, college_id, full_name) VALUES (%s, %s, %s)"
             user_data = (account_id, "", fullname)  # college_id need a default value?
             # Execute
             cursor.execute(add_user, user_data)
@@ -97,7 +106,7 @@ def login():
         email = form.inputEmail.data
         password = form.inputPassword.data
 
-        account_query = "SELECT * FROM accounts WHERE email_address = %s"
+        account_query = "SELECT * FROM account WHERE email_address = %s"
         values = (email,)
         cursor.execute(account_query, values)
         account = cursor.fetchone()
@@ -113,6 +122,7 @@ def login():
             return redirect(url_for("user_dashboard"))
     else:
         return render_template("login.html", form=form)
+    cursor.close()
 
 
 # Ensure responses aren't cached
@@ -159,7 +169,7 @@ def user_manage_car():
 
 @app.route('/user_manage_car/add_car', methods=["GET", "POST"])
 def user_add_car():
-    vehicle_reg = request.form['vehicleReg']
+    vehicle_reg = request.form['vehicleReg'].upper()
     if 'loggedin' in session:
         car_details = get_car_details()
         print(car_details)
@@ -174,7 +184,7 @@ def user_add_car():
 def user_delete_car():
     vehicle_reg = request.form['vehicle_reg']
     if 'loggedin' in session:
-        delete_car = "DELETE FROM cars WHERE registration = %s"
+        delete_car = "DELETE FROM car WHERE registration = %s"
         values = (vehicle_reg,)
         cursor.execute(delete_car, values)
         cnx.commit()
@@ -210,7 +220,7 @@ def kiosk_print_ticket():
 
 
 def get_account_details():
-    account_query = "SELECT * FROM accounts WHERE account_id = %s"
+    account_query = "SELECT * FROM account WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(account_query, values)
     account = cursor.fetchone()
@@ -218,7 +228,7 @@ def get_account_details():
 
 
 def get_user_details():
-    user_query = "SELECT * FROM users WHERE account_id = %s"
+    user_query = "SELECT * FROM driver WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(user_query, values)
     user = cursor.fetchone()
@@ -226,7 +236,7 @@ def get_user_details():
 
 
 def get_car_details():
-    user_query = "SELECT * FROM cars WHERE account_id = %s"
+    user_query = "SELECT * FROM car WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(user_query, values)
     # fetch one car atm
@@ -238,13 +248,13 @@ def get_car_details():
 
 def add_car(account_id, vehicle_reg):
     # check the car isn't registered already
-    check_car_query = "SELECT COUNT(registration) FROM cars WHERE registration = %s"
+    check_car_query = "SELECT COUNT(registration) FROM car WHERE registration = %s"
     values = (vehicle_reg,)  # input from form on manage car details page
     cursor.execute(check_car_query, values)
     result = cursor.fetchone()
     print(result)
     if result[0] == 0:
-        insert_car = "INSERT INTO cars VALUES (%s, %s)"
+        insert_car = "INSERT INTO car VALUES (%s, %s)"
         values = (vehicle_reg, account_id)
         cursor.execute(insert_car, values)
         # Commit to DB
