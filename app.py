@@ -81,6 +81,7 @@ def register():
             cnx.commit()
             # Close Cursor & connection
             cursor.close()
+            cnx.close()
 
         return redirect(url_for("login"))
     else:
@@ -158,16 +159,23 @@ def user_manage_car():
 @app.route('/user_manage_car/add_car', methods=["GET", "POST"])
 def user_add_car():
     vehicle_reg = request.form['vehicleReg']
+    print("vehicle_reg:")
     print(vehicle_reg)
     if 'loggedin' in session:
         car_details = get_car_details()
+        print("*** here ***")
+        print("car_details:")
         print(car_details)
-        # if there is no car details we need to add car details for that user
-        if car_details is None:
-            account = get_account_details()
-            add_car(account[0], vehicle_reg)
+        # add cars
+        account = get_account_details()
+        print("account_details:")
+        print(account)
+        add_car(account[0], vehicle_reg)
+        print("vehicle_reg")
+        print(vehicle_reg)
         return render_template("user_manage_car.html", vehicle_reg=vehicle_reg)
     return redirect(url_for('login'))
+
 
 # BUGGY CODE NEEDS TO BE FIXED
 
@@ -208,26 +216,30 @@ def get_car_details():
     values = (session['id'],)
     cursor.execute(user_query, values)
     # fetch one car atm
-    car_details = cursor.fetchone()
+    car_details = cursor.fetchall()
     return car_details
 
 
 # create a function that will add car to the db
 
 def add_car(account_id, vehicle_reg):
+    # check the car isn't registered already
     check_car_query = "SELECT COUNT(registration) FROM cars WHERE registration = %s"
     values = (vehicle_reg,)  # input from form on manage car details page
     cursor.execute(check_car_query, values)
-    car_details = cursor.fetchone()
-    cursor.close()
-    if car_details[0] == 0:
+    result = cursor.fetchone()
+    print("RESULT")
+    print(result)
+    if result[0] == 0:
+        print("got here after condition")
         insert_car = "INSERT INTO cars VALUES (%s, %s)"
         values = (vehicle_reg, account_id)
+        print("values got here")
+        print(values)
         cursor.execute(insert_car, values)
         # Commit to DB
         cnx.commit()
-        # Close Cursor & connection
-        cursor.close()
+        print(cursor.rowcount, "was inserted.")
 
 
 if __name__ == '__main__':
