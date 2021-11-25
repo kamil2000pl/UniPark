@@ -9,23 +9,23 @@ import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretKey'
 
-#config = {
-#    'user': 'brian',
-#    'password': 'brianmckenna',
-#    'host': 'localhost',
-#    'port': 8889,
-#    'database': 'uniparkdb',
-#    'raise_on_warnings': True,
-#}
-
 config = {
-    'user': 'root',
-    'password': '',
+    'user': 'brian',
+    'password': 'brianmckenna',
     'host': 'localhost',
-    'port': 3306,
+    'port': 8889,
     'database': 'uniparkdb',
     'raise_on_warnings': True,
 }
+
+# config = {
+#     'user': 'root',
+#     'password': '',
+#     'host': 'localhost',
+#     'port': 3306,
+#     'database': 'uniparkdb',
+#     'raise_on_warnings': True,
+# }
 
 cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor(buffered=True)
@@ -159,12 +159,45 @@ def user_manage_account():
     return redirect(url_for('login'))
 
 
-@app.route('/user_manage_account_personal_details')
-def user_manage_account_personal_details():
+@app.route('/user_manage_personal_details')
+def user_manage_personal_details():
     if 'loggedin' in session:
         account = get_account_details()
         user = get_user_details()
-        return render_template("user_manage_account_personal_details.html", account=account, session=session, user=user)
+        car = get_car_details()
+        return render_template("manage_personal_details.html", user=user)
+    return redirect(url_for('login'))
+
+
+@app.route('/user_manage_personal_details/add_id', methods=["GET", "POST"])
+def user_add_id():
+    college_id = request.form['studentId']
+    print(college_id)
+    if 'loggedin' in session:
+        user_details = get_user_details()
+        print("user_details")
+        print(user_details)
+        if user_details[2] == "" or user_details[2] is None:
+            add_college_id(user_details[0], college_id)
+            return redirect(url_for('user_manage_personal_details'))
+        else:
+            print("already have an id")
+            return redirect(url_for('user_manage_personal_details'))
+    return redirect(url_for('login'))
+
+
+@app.route('/user_manage_personal_details/delete_id', methods=["GET", "POST"])
+def user_delete_id():
+    print("DELETE ID ROUTE")
+    driver_id = request.form['driver_id']
+    print("driver_id")
+    print(driver_id)
+    if 'loggedin' in session:
+        remove_college_id = "UPDATE driver SET college_id = '' WHERE driver_id = %s"
+        values = (driver_id,)
+        cursor.execute(remove_college_id, values)
+        cnx.commit()
+        return redirect(url_for('user_manage_personal_details'))
     return redirect(url_for('login'))
 
 
@@ -266,6 +299,23 @@ def add_car(account_id, vehicle_reg):
         insert_car = "INSERT INTO car VALUES (%s, %s)"
         values = (vehicle_reg, account_id)
         cursor.execute(insert_car, values)
+        # Commit to DB
+        cnx.commit()
+        print(cursor.rowcount, "was inserted.")
+
+
+# create a function that will add student id to the db
+
+def add_college_id(user_id, college_id):
+    # check if add_college_id exists in driver
+    check_college_id_query = "SELECT COUNT(college_id) FROM driver WHERE college_id = %s"
+    values = (college_id,)  # input from form on manage personal details page
+    cursor.execute(check_college_id_query, values)
+    result = cursor.fetchone()
+    if result[0] == 0:
+        insert_college_id = "UPDATE driver SET college_id = %s WHERE driver_id = %s"
+        values = (college_id, user_id)
+        cursor.execute(insert_college_id, values)
         # Commit to DB
         cnx.commit()
         print(cursor.rowcount, "was inserted.")
