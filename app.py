@@ -159,6 +159,15 @@ def user_manage_account():
     return redirect(url_for('login'))
 
 
+@app.route('/user_manage_account_personal_details')
+def user_manage_account_personal_details():
+    if 'loggedin' in session:
+        account = get_account_details()
+        user = get_user_details()
+        return render_template("user_manage_account_personal_details.html", account=account, session=session, user=user)
+    return redirect(url_for('login'))
+
+
 @app.route('/user_manage_car')
 def user_manage_car():
     if 'loggedin' in session:

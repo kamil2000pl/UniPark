@@ -137,7 +137,7 @@
 {% endmacro %}
 
 {% macro user_manage_account_section(account, user, car) %}
-    <div class="container user-dashboard-container">
+    <div class="container user-dashboard-container position-relative">
         <div class="row m-auto justify-content-center">
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
@@ -148,6 +148,8 @@
                         <div class="col-12">
                             <div class="h3">Personal Details</div>
                         </div>
+                        {# make sure position-relative is in container class #}
+                    <a href="{{ url_for('user_manage_account_personal_details')}}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -245,6 +247,59 @@
                         </div>
                         <div class="mb-3 col-12">
                             <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro user_manage_personal_details_section(user) %}
+    <div class="container user-dashboard-container">
+        {{ user }}
+        <div class="row m-auto justify-content-center">
+            <div class="row mb-2">
+                <div class="col-12 border bg-main">
+                    <div class="p-4">
+                        {% if user is none %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                You must add a DkIT ID
+                                <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                            </div>
+                        {% else %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                DkIT ID
+                            </div>
+                            <ul class="list-group">
+                                {% for record in user %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                        {{ record }}
+                                        <form action="{{ url_for('user_delete_car') }}" method="POST">
+                                            <button type="submit" class="btn">
+                                                <input type="hidden" name="vehicle_reg" value="{{ record[2] }}">
+                                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                                            </button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2 text-center">
+                <div class="col-12 border bg-main p-4">
+                    <div class="display-5 mb-4 text-white">
+                        Enter DkIT ID
+                    </div>
+                    <form action="{{ url_for('user_add_car') }}" method="POST">
+                        <div class="mb-3 col-12">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <button type="submit" class="btn w-75 btn-primary bg-second">Add ID</button>
                         </div>
                     </form>
                 </div>
