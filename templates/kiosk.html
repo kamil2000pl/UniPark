@@ -18,7 +18,13 @@
             </div>
         </div>
         <div class="col-12 h-75 display-screen-kiosk border border-5">
-            Display Screen
+            <h1>Display Screen</h1>
+                {% if ticket_obj %}
+                    Ticket Printed:
+                    {{ ticket_obj }}
+                {% else %}
+                    If car number plate has not been read you need to a print ticket
+                {% endif %}
         </div>
         <div class="col-12 align-self-end">
             <div class="row">

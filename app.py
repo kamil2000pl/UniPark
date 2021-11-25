@@ -203,6 +203,7 @@ def kiosk_print_ticket():
     generate_datetime = datetime.datetime.now()
     if print_request:
         ticket_obj = generate_datetime
+        print("Ticket Object Created!")
         print(ticket_obj)
         return render_template("kiosk.html", ticket_obj=ticket_obj)
     return render_template("kiosk.html")
