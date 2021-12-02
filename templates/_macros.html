@@ -55,6 +55,9 @@
                             <i class="bi bi-exclamation-circle-fill text-warning"></i>
                         </div>
                         <ul class="list-group">
+                            {% if none in payment %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="list-group-item list-group-item-action">Add a card for payment</a>
+                            {% endif %}
                             {% if account[1] < 2 %}
                                 <a href="" class="list-group-item list-group-item-action">Top up your account</a>
                             {% endif %}
@@ -126,7 +129,7 @@
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if user[2] == "" or  user[2] == None %}
+                        {% if user[2] == "" or  user[2] == None or car[0] == None or none in payment %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
