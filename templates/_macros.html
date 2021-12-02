@@ -50,12 +50,11 @@
                             {% if account[1] < 2 %}
                                 <li class="list-group-item">Top up your account</li>
                             {% endif %}
-                            <li class="list-group-item">An item
-                            </li>
-                            <li class="list-group-item">A second item
-                            </li>
-                            <li class="list-group-item">A third item
-                            </li>
+                            {% if user[2] == "" %}
+                                <li class="list-group-item">Add college ID</li>
+                            {% endif %}
+                            {# will need to add in tasks for other items such as card payment #}
+                            {# will work on that section first and then come back to here #}
                         </ul>
                     </div>
                 </div>

@@ -285,6 +285,14 @@ def get_car_details():
     return car_details
 
 
+def get_card_payment_details():
+    user_query = "SELECT * FROM car WHERE account_id = %s"
+    values = (session['id'],)
+    cursor.execute(user_query, values)
+    # fetch one car atm
+    car_details = cursor.fetchall()
+    return car_details
+
 # create a function that will add car to the db
 
 def add_car(account_id, vehicle_reg):
