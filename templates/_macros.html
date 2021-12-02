@@ -76,7 +76,7 @@
             </div>
 
             <div class="row">
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         {% if account[1] < 2 %}
                             <div class="col-6 text-end">
@@ -97,6 +97,8 @@
                             <div class="fst-italic">Current Balance:</div>
                             <div class="fst-italic fw-bold fs-1">€{{ "%.2f"|format(account[1]) }}</div>
                         </div>
+                    {# make sure position-relative is in container class #}
+                    <a href="{{ url_for('user_top_up_account') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -364,8 +366,16 @@
     </div>
 {% endmacro %}
 
-{% macro user_top_up_account_section() %}
+{% macro user_top_up_account_section(account_details, card_payment_details) %}
     <div class="container">
+    {{ account_details }}
+    {{ card_payment_details }}
+        {# TODO - FINISH TOP UP ACCOUNT - #}
+        {# 1. ADD LINK TO MANAGE CARD DETAILS PAGE
+        2. IF NO CARD DETAILS AT ALL HIDE INPUT FIELDS AND JUST SHOW BUTTON TO MANAGE CAR DETAILS
+        3. USE JAVASCRIPT TO HIDE CARD DETAILS, ONLY SHOW LAST 4 DIGITS
+        https://javascript.plainenglish.io/javascript-algorithm-hiding-the-card-number-413801b267e9
+        #}
         <div class="row m-auto justify-content-center">
             <form class="main-form m-auto bg-form p-4">
                 <div class="bg-main p-4 text-center mb-3 border-5">
@@ -373,29 +383,29 @@
                         Current Balance
                     </div>
                     <div class="display-4 fw-bolder fst-italic">
-                        €0.00
+                        €{{ "%.2f"|format(account_details[1])}}
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="mb-3 col-sm-12">
                         <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                        <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
                     </div>
                     <div class="mb-3 col-sm-12">
                         <label for="inputCardNumber" class="form-label">Card Number</label>
-                        <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
                     </div>
                     <div class="mb-3 col-8">
                         <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                        <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
                     </div>
                     <div class="mb-3 col-4">
                         <label for="inputCCV" class="form-label">CCV</label>
-                        <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[5] }}" class="form-control" id="inputCCV" aria-describedby="payment">
                     </div>
                     <div class="mb-3 col-12">
                         <label for="inputAmount" class="form-label">Top Up Amount €</label>
-                        <input type="text" class="form-control" id="inputAmount" aria-describedby="payment">
+                        <input type="text" value="10" class="form-control" id="inputAmount" aria-describedby="payment">
                     </div>
                     <div class="mb-3 col-6">
                         <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>

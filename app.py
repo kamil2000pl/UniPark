@@ -283,7 +283,11 @@ def user_card_payment_details():
 
 @app.route('/user_top_up_account')
 def user_top_up_account():
-    return render_template("user_top_up_account.html")
+    if 'loggedin' in session:
+        card_payment_details = get_card_payment_details()
+        account_details = get_account_details()
+        return render_template("user_top_up_account.html", account_details=account_details, card_payment_details=card_payment_details)
+    return redirect(url_for('login'))
 
 
 @app.route('/kiosk')
