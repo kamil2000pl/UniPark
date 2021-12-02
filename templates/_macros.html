@@ -4,7 +4,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/"><span class="unipark-unispan">UNI</span>PARK</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 {% if session['loggedin'] %}
                     Logged in
@@ -14,11 +15,14 @@
                 <div class="navbar-nav">
                     <a class="nav-link {{ 'active' if active_page == '/' else '' }}" href="/">Home</a>
                     {% if session['loggedin'] %}
-                        <a class="nav-link {{ 'active' if active_page == 'user_dashboard' else '' }}" href="{{ url_for('user_dashboard')}}">Dashboard</a>
-                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                        <a class="nav-link {{ 'active' if active_page == 'user_dashboard' else '' }}"
+                           href="{{ url_for('user_dashboard') }}">Dashboard</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     {% else %}
-                        <a class="nav-link {{ 'active' if active_page == 'register' else '' }}" href="{{ url_for('register')}}">Register</a>
-                        <a class="nav-link {{ 'active' if active_page == 'login' else '' }}" href="{{ url_for('login')}}">Login</a>
+                        <a class="nav-link {{ 'active' if active_page == 'register' else '' }}"
+                           href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-link {{ 'active' if active_page == 'login' else '' }}"
+                           href="{{ url_for('login') }}">Login</a>
                     {% endif %}
                 </div>
             </div>
@@ -128,15 +132,16 @@
                         </div>
                     </div>
                     {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_manage_account')}}" class="stretched-link"></a>
+                    <a href="{{ url_for('user_manage_account') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro user_manage_account_section(account, user, car) %}
+{% macro user_manage_account_section(account, user, car, payment) %}
     <div class="container user-dashboard-container">
+        {{ payment }}
         <div class="row m-auto justify-content-center">
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
@@ -147,27 +152,32 @@
                         <div class="col-12">
                             <div class="h3">Personal Details</div>
                         </div>
-                    {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_manage_personal_details')}}" class="stretched-link"></a>
+                        {% if user[2] == "" %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                        {% endif %}
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_manage_personal_details') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if car is none %}
+                        <div class="col-12">
+                            <i class="fa fa-car dashboard-icon"></i>
+                        </div>
+                        <div class="col-12">
+                            <div class="h3">Car Details</div>
+                        </div>
+                        {% if not car %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
                         {% endif %}
-                        <div class="col-12">
-                            <div class="h3">Car Details</div>
-                        </div>
-                        <div class="col-12">
-                            <i class="fa fa-car dashboard-icon"></i>
-                        </div>
                     </div>
                     {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_manage_car')}}" class="stretched-link"></a>
+                    <a href="{{ url_for('user_manage_car') }}" class="stretched-link"></a>
                 </div>
             </div>
 
@@ -175,16 +185,19 @@
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         <div class="col-12">
-                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
                         </div>
                         <div class="col-12">
                             <div class="h3">Card Payment Details</div>
                         </div>
-                        <div class="col-12">
-                            <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
-                        </div>
+                        {% if none in payment %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                        {% endif %}
+
                         {# make sure position-relative is in container class #}
-                        <a href="{{ url_for('user_card_payment_details')}}" class="stretched-link"></a>
+                        <a href="{{ url_for('user_card_payment_details') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -244,7 +257,8 @@
                     </div>
                     <form action="{{ url_for('user_add_car') }}" method="POST">
                         <div class="mb-3 col-12">
-                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center"
+                                   id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
                         </div>
                         <div class="mb-3 col-12">
                             <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
@@ -263,7 +277,7 @@
             <div class="row mb-2">
                 <div class="col-12 border bg-main">
                     <div class="p-4">
-                        {% if user[2] is none or user[2] == ""  %}
+                        {% if user[2] is none or user[2] == "" %}
                             <div class="display-5 mb-4 text-center text-white">
                                 You must add a Student ID
                                 <i class="bi bi-exclamation-circle-fill text-warning"></i>
@@ -274,15 +288,15 @@
                             </div>
                             <p class="lead fst-italic text-center">Only one Student ID per account</p>
                             <ul class="list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                        {{ user[2] }}
-                                        <form action="{{ url_for('user_delete_id') }}" method="POST">
-                                            <button type="submit" class="btn">
-                                                <input type="hidden" name="driver_id" value="{{ user[0] }}">
-                                                <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
-                                            </button>
-                                        </form>
-                                    </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                    {{ user[2] }}
+                                    <form action="{{ url_for('user_delete_id') }}" method="POST">
+                                        <button type="submit" class="btn">
+                                            <input type="hidden" name="driver_id" value="{{ user[0] }}">
+                                            <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         {% endif %}
                     </div>
@@ -296,7 +310,8 @@
                     </div>
                     <form action="{{ url_for('user_add_id') }}" method="POST">
                         <div class="mb-3 col-12">
-                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="studentId" name="studentId" aria-describedby="studentId">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center"
+                                   id="studentId" name="studentId" aria-describedby="studentId">
                         </div>
                         <div class="mb-3 col-12">
                             <button type="submit" class="btn w-75 btn-primary bg-second">Add Student ID</button>
@@ -310,21 +325,24 @@
 
 {% macro user_manage_payment_section(card_payment_details) %}
     <div class="container">
-    Current details:
-    {{ card_payment_details }}
+        Current details:
+        {{ card_payment_details }}
         <form action="{{ url_for('user_add_card_payment') }}" method="POST" class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                    <input type="text" class="form-control" name="inputNameOnCard" id="inputNameOnCard" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputNameOnCard" id="inputNameOnCard"
+                           aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
-                    <input type="text" class="form-control" name="inputCardNumber" id="inputCardNumber" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputCardNumber" id="inputCardNumber"
+                           aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" name="inputExpiryDate" id="inputExpiryDate" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                           aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-4">
                     <label for="inputCCV" class="form-label">CCV</label>

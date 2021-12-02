@@ -96,7 +96,7 @@ def register():
             cnx.commit()
             # Close Cursor & connection
             cursor.close()
-            cnx.close()
+            # cnx.close()
 
         return redirect(url_for("login"))
     else:
@@ -159,7 +159,8 @@ def user_manage_account():
         account = get_account_details()
         user = get_user_details()
         car = get_car_details()
-        return render_template("user_manage_account.html", account=account, session=session, user=user, car=car)
+        payment = get_card_payment_details()
+        return render_template("user_manage_account.html", account=account, session=session, user=user, car=car, payment=payment)
     return redirect(url_for('login'))
 
 
@@ -331,7 +332,6 @@ def get_card_payment_details():
     cursor.execute(card_payment_query, values)
     card_payment_result = cursor.fetchone()
     return card_payment_result
-
 
 
 # create a function that will add car to the db
