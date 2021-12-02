@@ -122,7 +122,6 @@ def login():
             return redirect(url_for("user_dashboard"))
     else:
         return render_template("login.html", form=form)
-    cursor.close()
 
 
 # Ensure responses aren't cached
