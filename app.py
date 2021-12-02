@@ -96,7 +96,7 @@ def register():
             cnx.commit()
             # Close Cursor & connection
             cursor.close()
-            # cnx.close()
+            cnx.close()
 
         return redirect(url_for("login"))
     else:
@@ -149,7 +149,9 @@ def user_dashboard():
     if 'loggedin' in session:
         account = get_account_details()
         user = get_user_details()
-        return render_template("user_dashboard.html", account=account, session=session, user=user)
+        car = get_car_details()
+        payment = get_card_payment_details()
+        return render_template("user_dashboard.html", account=account, session=session, user=user, car=car, payment=payment)
     return redirect(url_for('login'))
 
 
