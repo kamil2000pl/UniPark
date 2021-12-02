@@ -87,6 +87,11 @@ def register():
             user_data = (account_id, "", fullname)  # college_id need a default value?
             # Execute
             cursor.execute(add_user, user_data)
+
+            # need to generate the payment id
+            add_payment = "INSERT INTO payment (account_id) VALUES (%s)"
+            payment_data = (account_id,)
+            cursor.execute(add_payment, payment_data)
             # Commit to DB
             cnx.commit()
             # Close Cursor & connection
@@ -221,6 +226,37 @@ def user_add_car():
     return redirect(url_for('login'))
 
 
+# add card payment
+@app.route('/user_card_payment_details/add_card_payment', methods=["GET", "POST"])
+def user_add_card_payment():
+    # get the data from the forms
+    # need to do validation with wtforms here
+    name_on_card = request.form['inputNameOnCard']
+    card_number = request.form['inputCardNumber']
+    expiry_date = request.form['inputExpiryDate']
+    ccv = request.form['inputCCV']
+    card_form_requests = [name_on_card, card_number, expiry_date, ccv]
+
+    if 'loggedin' in session:
+        account = get_account_details()
+        add_card(account, card_form_requests)
+        return redirect(url_for('user_card_payment_details'))
+    return redirect(url_for('login'))
+
+# create a function that will card payment
+
+
+def add_card(account, card_form_requests):
+    print(account)
+    print(card_form_requests)
+    insert_card = "UPDATE payment SET name_on_card = %s, card_number = %s, card_expiry = %s, ccv = %s WHERE account_id = %s"
+    values = (card_form_requests[0], card_form_requests[1], card_form_requests[2], card_form_requests[3], account[0])
+    cursor.execute(insert_card, values)
+    # Commit to DB
+    cnx.commit()
+    print(cursor.rowcount, "was inserted.")
+
+
 @app.route('/user_manage_car/delete_car', methods=["GET", "POST"])
 def user_delete_car():
     vehicle_reg = request.form['vehicle_reg']
@@ -235,7 +271,11 @@ def user_delete_car():
 
 @app.route('/user_card_payment_details')
 def user_card_payment_details():
-    return render_template("user_card_payment_details.html")
+    if 'loggedin' in session:
+        # get the payment details
+        card_payment_details = get_card_payment_details()
+        return render_template("user_card_payment_details.html", card_payment_details=card_payment_details)
+    return redirect(url_for('login'))
 
 
 @app.route('/user_top_up_account')
@@ -286,12 +326,13 @@ def get_car_details():
 
 
 def get_card_payment_details():
-    user_query = "SELECT * FROM car WHERE account_id = %s"
+    card_payment_query = "SELECT * FROM payment WHERE account_id = %s"
     values = (session['id'],)
-    cursor.execute(user_query, values)
-    # fetch one car atm
-    car_details = cursor.fetchall()
-    return car_details
+    cursor.execute(card_payment_query, values)
+    card_payment_result = cursor.fetchone()
+    return card_payment_result
+
+
 
 # create a function that will add car to the db
 

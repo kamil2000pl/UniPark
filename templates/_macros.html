@@ -55,6 +55,7 @@
                             {% endif %}
                             {# will need to add in tasks for other items such as card payment #}
                             {# will work on that section first and then come back to here #}
+                            {# also need to make each item a link that redirects to where the tasks is#}
                         </ul>
                     </div>
                 </div>
@@ -171,7 +172,7 @@
             </div>
 
             <div class="row">
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         <div class="col-12">
                             <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
@@ -182,6 +183,8 @@
                         <div class="col-12">
                             <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
                         </div>
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_card_payment_details')}}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -305,25 +308,27 @@
     </div>
 {% endmacro %}
 
-{% macro user_manage_payment_section() %}
+{% macro user_manage_payment_section(card_payment_details) %}
     <div class="container">
-        <form class="main-form m-auto bg-form p-4">
+    Current details:
+    {{ card_payment_details }}
+        <form action="{{ url_for('user_add_card_payment') }}" method="POST" class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                    <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputNameOnCard" id="inputNameOnCard" aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputCardNumber" id="inputCardNumber" aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputExpiryDate" id="inputExpiryDate" aria-describedby="payment">
                 </div>
                 <div class="mb-3 col-4">
                     <label for="inputCCV" class="form-label">CCV</label>
-                    <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
+                    <input type="text" class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
                 </div>
                 <button type="submit" class="btn w-75 btn-primary">Save Card Details</button>
             </div>
