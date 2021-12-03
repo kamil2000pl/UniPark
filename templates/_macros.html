@@ -345,30 +345,30 @@
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
                     {% if none in card_payment_details %}
                         <input type="text" autofocus required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
-                           aria-describedby="payment">
+                               aria-describedby="payment">
                     {% else %}
                         <input type="text" autofocus value="{{ card_payment_details[2] }}" required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
-                           aria-describedby="payment">
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
                     {% if none in card_payment_details %}
-                    <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
-                           aria-describedby="payment">
+                        <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                               aria-describedby="payment">
                     {% else %}
-                         <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
-                           aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
                     {% if none in card_payment_details %}
-                    <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
-                           aria-describedby="payment">
+                        <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                               aria-describedby="payment">
                     {% else %}
-                         <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
-                           aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-4">
