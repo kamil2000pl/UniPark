@@ -301,13 +301,13 @@ def user_add_funds():
         card_payment_details = get_card_payment_details()
         account_details = get_account_details()
         add_funds(card_payment_details, top_up_account_request)
-        return render_template("user_top_up_account.html", account_details=account_details, card_payment_details=card_payment_details)
+        return redirect(url_for('user_top_up_account'))
     return redirect(url_for('login'))
 
 
 def add_funds(card_payment_details, top_up_account_request):
     cursor = cnx.cursor(buffered=True)
-    insert_funds = "UPDATE account SET account_balance = %s WHERE account_id = %s"
+    insert_funds = "UPDATE account SET account_balance = account_balance + %s WHERE account_id = %s"
     values = (top_up_account_request[4], card_payment_details[1])
     cursor.execute(insert_funds, values)
     # Commit to DB
