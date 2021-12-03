@@ -131,7 +131,7 @@
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if user[2] == "" or  user[2] == None or car[0] == None or none in payment %}
+                        {% if user[2] == "" or  user[2] == None or not car or none in payment %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
