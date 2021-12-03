@@ -179,26 +179,19 @@ def user_manage_personal_details():
 @app.route('/user_manage_personal_details/add_id', methods=["GET", "POST"])
 def user_add_id():
     college_id = request.form['studentId']
-    print(college_id)
     if 'loggedin' in session:
         user_details = get_user_details()
-        print("user_details")
-        print(user_details)
         if user_details[2] == "" or user_details[2] is None:
             add_college_id(user_details[0], college_id)
             return redirect(url_for('user_manage_personal_details'))
         else:
-            print("already have an id")
             return redirect(url_for('user_manage_personal_details'))
     return redirect(url_for('login'))
 
 
 @app.route('/user_manage_personal_details/delete_id', methods=["GET", "POST"])
 def user_delete_id():
-    print("DELETE ID ROUTE")
     driver_id = request.form['driver_id']
-    print("driver_id")
-    print(driver_id)
     if 'loggedin' in session:
         remove_college_id = "UPDATE driver SET college_id = '' WHERE driver_id = %s"
         values = (driver_id,)
@@ -221,7 +214,6 @@ def user_add_car():
     vehicle_reg = request.form['vehicleReg'].upper()
     if 'loggedin' in session:
         car_details = get_car_details()
-        print(car_details)
         # add cars
         account = get_account_details()
         add_car(account[0], vehicle_reg)
@@ -250,8 +242,6 @@ def user_add_card_payment():
 
 
 def add_card(account, card_form_requests):
-    print(account)
-    print(card_form_requests)
     insert_card = "UPDATE payment SET name_on_card = %s, card_number = %s, card_expiry = %s, ccv = %s WHERE account_id = %s"
     values = (card_form_requests[0], card_form_requests[1], card_form_requests[2], card_form_requests[3], account[0])
     cursor.execute(insert_card, values)
@@ -288,6 +278,33 @@ def user_top_up_account():
         account_details = get_account_details()
         return render_template("user_top_up_account.html", account_details=account_details, card_payment_details=card_payment_details)
     return redirect(url_for('login'))
+
+
+@app.route('/user_top_up_account/add_funds', methods=["GET", "POST"])
+def user_add_funds():
+    # get the data from the forms
+    name_on_card = request.form['inputNameOnCard']
+    card_number = request.form['inputCardNumber']
+    expiry_date = request.form['inputExpiryDate']
+    ccv = request.form['inputCCV']
+    top_up_amount = request.form['inputAmount']
+    top_up_account_request = [name_on_card, card_number, expiry_date, ccv, top_up_amount]
+
+    if 'loggedin' in session:
+        card_payment_details = get_card_payment_details()
+        account_details = get_account_details()
+        add_funds(card_payment_details, top_up_account_request)
+        return render_template("user_top_up_account.html", account_details=account_details, card_payment_details=card_payment_details)
+    return redirect(url_for('login'))
+
+
+def add_funds(card_payment_details, top_up_account_request):
+    insert_funds = "UPDATE account SET account_balance = %s WHERE account_id = %s"
+    values = (top_up_account_request[4], card_payment_details[1])
+    cursor.execute(insert_funds, values)
+    # Commit to DB
+    cnx.commit()
+    print(cursor.rowcount, "was inserted.")
 
 
 @app.route('/kiosk')
