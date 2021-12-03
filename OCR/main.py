@@ -25,9 +25,9 @@ sensors = ["camera", "barcode"]
 data = {}
 
 pnconfig = PNConfiguration()
-pnconfig.subscribe_key = 'sub-c-c3f180b0-3c8a-11ec-8182-fea14ba1eb2b'
-pnconfig.publish_key = 'pub-c-84f41522-0f72-4fe1-ba99-5fa14d0329b9'
-pnconfig.uuid = '0b196963-df2f-4996-970a-778ecb0fd41e'
+pnconfig.subscribe_key = ''
+pnconfig.publish_key = ''
+pnconfig.uuid = ''
 pubnub = PubNub(pnconfig)
 
 # Set tesseract path to where the tesseract exe file is located
