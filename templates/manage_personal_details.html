@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head_section, manage_personal_details_section %}
+
+{% block title %}
+    Manage Account
+{% endblock %}
+
+{% block page_head_section %}
+    {{ page_head_section("Manage Personal Details") }}
+{% endblock %}
+
+{% block manage_personal_details_section %}
+    {{ manage_personal_details_section(user) }}
+{% endblock %}

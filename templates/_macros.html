@@ -4,7 +4,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/"><span class="unipark-unispan">UNI</span>PARK</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 {% if session['loggedin'] %}
                     Logged in
@@ -14,11 +15,14 @@
                 <div class="navbar-nav">
                     <a class="nav-link {{ 'active' if active_page == '/' else '' }}" href="/">Home</a>
                     {% if session['loggedin'] %}
-                        <a class="nav-link {{ 'active' if active_page == 'user_dashboard' else '' }}" href="{{ url_for('user_dashboard')}}">Dashboard</a>
-                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                        <a class="nav-link {{ 'active' if active_page == 'user_dashboard' else '' }}"
+                           href="{{ url_for('user_dashboard') }}">Dashboard</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     {% else %}
-                        <a class="nav-link {{ 'active' if active_page == 'register' else '' }}" href="{{ url_for('register')}}">Register</a>
-                        <a class="nav-link {{ 'active' if active_page == 'login' else '' }}" href="{{ url_for('login')}}">Login</a>
+                        <a class="nav-link {{ 'active' if active_page == 'register' else '' }}"
+                           href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-link {{ 'active' if active_page == 'login' else '' }}"
+                           href="{{ url_for('login') }}">Login</a>
                     {% endif %}
                 </div>
             </div>
@@ -36,7 +40,11 @@
     </div>
 {% endmacro %}
 
-{% macro user_dashboard_section(account, user) %}
+{% macro user_dashboard_section(account, user, car, payment) %}
+    {{ account }}
+    {{ user }}
+    {{ car }}
+    {{ payment }}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
@@ -47,22 +55,28 @@
                             <i class="bi bi-exclamation-circle-fill text-warning"></i>
                         </div>
                         <ul class="list-group">
-                            {% if account[1] < 2 %}
-                                <li class="list-group-item">Top up your account</li>
+                            {% if none in payment %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="list-group-item list-group-item-action">Add a card for payment</a>
                             {% endif %}
-                            <li class="list-group-item">An item
-                            </li>
-                            <li class="list-group-item">A second item
-                            </li>
-                            <li class="list-group-item">A third item
-                            </li>
+                            {% if account[1] < 2 %}
+                                <a href="{{ url_for('user_top_up_account') }}" class="list-group-item list-group-item-action">Top up your account</a>
+                            {% endif %}
+                            {% if user[2] == "" %}
+                                <a href="{{ url_for('user_manage_personal_details') }}" class="list-group-item list-group-item-action">Add college ID</a>
+                            {% endif %}
+                            {% if not car %}
+                                <a href="{{ url_for('user_manage_car') }}" class="list-group-item list-group-item-action">Add car registration plate</a>
+                            {% endif %}
+                            {# will need to add in tasks for other items such as card payment #}
+                            {# will work on that section first and then come back to here #}
+                            {# also need to make each item a link that redirects to where the tasks is#}
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         {% if account[1] < 2 %}
                             <div class="col-6 text-end">
@@ -83,6 +97,8 @@
                             <div class="fst-italic">Current Balance:</div>
                             <div class="fst-italic fw-bold fs-1">€{{ "%.2f"|format(account[1]) }}</div>
                         </div>
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_top_up_account') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -113,10 +129,9 @@
                     </div>
                 </div>
 
-
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if user[2] == "" or  user[2] == None %}
+                        {% if user[2] == "" or  user[2] == None or car[0] == None or none in payment %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
@@ -129,18 +144,19 @@
                         </div>
                     </div>
                     {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_manage_account')}}" class="stretched-link"></a>
+                    <a href="{{ url_for('user_manage_account') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro user_manage_account_section(account, user, car) %}
+{% macro user_manage_account_section(account, user, car, payment) %}
     <div class="container user-dashboard-container">
+        {{ payment }}
         <div class="row m-auto justify-content-center">
             <div class="row">
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         <div class="col-12">
                             <i class="bi bi-person-circle dashboard-icon"></i>
@@ -148,40 +164,52 @@
                         <div class="col-12">
                             <div class="h3">Personal Details</div>
                         </div>
+                        {% if user[2] == "" %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                        {% endif %}
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_manage_personal_details') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if car is none %}
+                        <div class="col-12">
+                            <i class="fa fa-car dashboard-icon"></i>
+                        </div>
+                        <div class="col-12">
+                            <div class="h3">Car Details</div>
+                        </div>
+                        {% if not car %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
                         {% endif %}
-                        <div class="col-12">
-                            <div class="h3">Car Details</div>
-                        </div>
-                        <div class="col-12">
-                            <i class="fa fa-car dashboard-icon"></i>
-                        </div>
                     </div>
                     {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_manage_car')}}" class="stretched-link"></a>
+                    <a href="{{ url_for('user_manage_car') }}" class="stretched-link"></a>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change">
+                <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
                         <div class="col-12">
-                            <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
                         </div>
                         <div class="col-12">
                             <div class="h3">Card Payment Details</div>
                         </div>
-                        <div class="col-12">
-                            <i class="bi bi-credit-card-2-front-fill dashboard-icon"></i>
-                        </div>
+                        {% if none in payment %}
+                            <div class="col-12">
+                                <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
+                            </div>
+                        {% endif %}
+
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_card_payment_details') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -206,7 +234,7 @@
             <div class="row mb-2">
                 <div class="col-12 border bg-main">
                     <div class="p-4">
-                        {% if car is none %}
+                        {% if not car %}
                             <div class="display-5 mb-4 text-center text-white">
                                 You must add a car
                                 <i class="bi bi-exclamation-circle-fill text-warning"></i>
@@ -241,7 +269,8 @@
                     </div>
                     <form action="{{ url_for('user_add_car') }}" method="POST">
                         <div class="mb-3 col-12">
-                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center" id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center"
+                                   id="vehicleReg" name="vehicleReg" aria-describedby="vehicleReg">
                         </div>
                         <div class="mb-3 col-12">
                             <button type="submit" class="btn w-75 btn-primary bg-second">Add Vehicle</button>
@@ -253,25 +282,102 @@
     </div>
 {% endmacro %}
 
-{% macro user_manage_payment_section() %}
+{# HERE!!! #}
+{% macro manage_personal_details_section(user) %}
+    <div class="container user-dashboard-container">
+        <div class="row m-auto justify-content-center">
+            <div class="row mb-2">
+                <div class="col-12 border bg-main">
+                    <div class="p-4">
+                        {% if user[2] is none or user[2] == "" %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                You must add a College ID
+                                <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                            </div>
+                        {% else %}
+                            <div class="display-5 mb-4 text-center text-white">
+                                Current ID
+                            </div>
+                            <p class="lead fst-italic text-center">Only one College ID per account</p>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                    {{ user[2] }}
+                                    <form action="{{ url_for('user_delete_id') }}" method="POST">
+                                        <button type="submit" class="btn">
+                                            <input type="hidden" name="driver_id" value="{{ user[0] }}">
+                                            <i class="bi bi-dash-circle-fill dashboard-icon text-danger"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2 text-center">
+                <div class="col-12 border bg-main p-4">
+                    <div class="display-5 mb-4 text-white">
+                        Enter College ID
+                    </div>
+                    <form action="{{ url_for('user_add_id') }}" method="POST">
+                        <div class="mb-3 col-12">
+                            <input type="text" class="form-control-lg fw-bolder text-uppercase text-center"
+                                   id="studentId" name="studentId" aria-describedby="studentId">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <button type="submit" class="btn w-75 btn-primary bg-second">Add College ID</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro user_manage_payment_section(card_payment_details) %}
     <div class="container">
-        <form class="main-form m-auto bg-form p-4">
+        Current details:
+        {{ card_payment_details }}
+        <form action="{{ url_for('user_add_card_payment') }}" method="POST" class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                    <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                    {% if none in card_payment_details %}
+                        <input type="text" autofocus required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
+                           aria-describedby="payment">
+                    {% else %}
+                        <input type="text" autofocus value="{{ card_payment_details[2] }}" required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
+                    {% if none in card_payment_details %}
+                    <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                           aria-describedby="payment">
+                    {% else %}
+                         <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                    {% if none in card_payment_details %}
+                    <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                           aria-describedby="payment">
+                    {% else %}
+                         <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-4">
                     <label for="inputCCV" class="form-label">CCV</label>
-                    <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
+                    {% if none in card_payment_details %}
+                        <input type="text" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
+                    {% else %}
+                        <input type="text" value="{{ card_payment_details[5] }}" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <button type="submit" class="btn w-75 btn-primary">Save Card Details</button>
             </div>
@@ -279,8 +385,16 @@
     </div>
 {% endmacro %}
 
-{% macro user_top_up_account_section() %}
+{% macro user_top_up_account_section(account_details, card_payment_details) %}
     <div class="container">
+        {{ account_details }}
+        {{ card_payment_details }}
+        {# TODO - FINISH TOP UP ACCOUNT - #}
+        {# 1. ADD LINK TO MANAGE CARD DETAILS PAGE
+        2. IF NO CARD DETAILS AT ALL HIDE INPUT FIELDS AND JUST SHOW BUTTON TO MANAGE CAR DETAILS
+        3. USE JAVASCRIPT TO HIDE CARD DETAILS, ONLY SHOW LAST 4 DIGITS
+        https://javascript.plainenglish.io/javascript-algorithm-hiding-the-card-number-413801b267e9
+        #}
         <div class="row m-auto justify-content-center">
             <form class="main-form m-auto bg-form p-4">
                 <div class="bg-main p-4 text-center mb-3 border-5">
@@ -288,36 +402,53 @@
                         Current Balance
                     </div>
                     <div class="display-4 fw-bolder fst-italic">
-                        €0.00
+                        €{{ "%.2f"|format(account_details[1])}}
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="mb-3 col-sm-12">
-                        <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                        <input type="text" class="form-control" id="inputNameOnCard" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-sm-12">
-                        <label for="inputCardNumber" class="form-label">Card Number</label>
-                        <input type="email" class="form-control" id="inputEmail" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-8">
-                        <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                        <input type="text" class="form-control" id="inputExpiryDate" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-4">
-                        <label for="inputCCV" class="form-label">CCV</label>
-                        <input type="text" class="form-control" id="inputCCV" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-12">
-                        <label for="inputAmount" class="form-label">Top Up Amount €</label>
-                        <input type="text" class="form-control" id="inputAmount" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-6">
-                        <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>
-                    </div>
-                    <div class="mb-3 col-6">
-                        <button type="submit" class="btn w-100 btn-primary">Process Payment</button>
-                    </div>
+                    {% if none in card_payment_details %}
+                        <div class="mb-3 col-sm-12">
+                            You must add card to account
+                        </div>
+                        <div class="mb-3 col-6">
+                            <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Add Card</a>
+                        </div>
+                    {% else %}
+                        <div class="mb-3 col-sm-12">
+                            <label for="inputNameOnCard" class="form-label">Name On Card</label>
+                            <input type="text" disabled value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-sm-12">
+                            <label for="inputCardNumber" class="form-label">Card Number</label>
+                            <input type="text" disabled value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-8">
+                            <label for="inputExpiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" disabled value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="inputCCV" class="form-label">CCV</label>
+                            <input type="text" required class="form-control" id="inputCCV" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="inputAmount" class="form-label">Top Up Amount €</label>
+                            <input type="text" value="10" required class="form-control" id="inputAmount" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-6">
+                            {% if none in card_payment_details %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Add Card</a>
+                            {% else %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Manage Card Details</a>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3 col-6">
+                            {% if none in card_payment_details %}
+                                <button type="submit" disabled name="processPayment" value="processPayment" class="btn w-100 btn-primary">Process Payment</button>
+                            {% else %}
+                                <button type="submit" name="processPayment" value="processPayment" class="btn w-100 btn-primary">Process Payment</button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             </form>
         </div>
