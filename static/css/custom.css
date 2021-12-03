@@ -61,7 +61,7 @@
     font-style: italic;
 }
 
-.btn-primary {
+.btn-primary, .btn-primary[disabled]  {
     background-color: #707070;
     border-color: #707070;
 }

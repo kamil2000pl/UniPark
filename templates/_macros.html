@@ -59,7 +59,7 @@
                                 <a href="{{ url_for('user_card_payment_details') }}" class="list-group-item list-group-item-action">Add a card for payment</a>
                             {% endif %}
                             {% if account[1] < 2 %}
-                                <a href="" class="list-group-item list-group-item-action">Top up your account</a>
+                                <a href="{{ url_for('user_top_up_account') }}" class="list-group-item list-group-item-action">Top up your account</a>
                             {% endif %}
                             {% if user[2] == "" %}
                                 <a href="{{ url_for('user_manage_personal_details') }}" class="list-group-item list-group-item-action">Add college ID</a>
@@ -97,8 +97,8 @@
                             <div class="fst-italic">Current Balance:</div>
                             <div class="fst-italic fw-bold fs-1">€{{ "%.2f"|format(account[1]) }}</div>
                         </div>
-                    {# make sure position-relative is in container class #}
-                    <a href="{{ url_for('user_top_up_account') }}" class="stretched-link"></a>
+                        {# make sure position-relative is in container class #}
+                        <a href="{{ url_for('user_top_up_account') }}" class="stretched-link"></a>
                     </div>
                 </div>
 
@@ -343,22 +343,41 @@
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                    <input type="text" class="form-control" name="inputNameOnCard" id="inputNameOnCard"
+                    {% if none in card_payment_details %}
+                        <input type="text" autofocus required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
                            aria-describedby="payment">
+                    {% else %}
+                        <input type="text" autofocus value="{{ card_payment_details[2] }}" required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
-                    <input type="text" class="form-control" name="inputCardNumber" id="inputCardNumber"
+                    {% if none in card_payment_details %}
+                    <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
                            aria-describedby="payment">
+                    {% else %}
+                         <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                    <input type="text" class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                    {% if none in card_payment_details %}
+                    <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
                            aria-describedby="payment">
+                    {% else %}
+                         <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                           aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <div class="mb-3 col-4">
                     <label for="inputCCV" class="form-label">CCV</label>
-                    <input type="text" class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
+                    {% if none in card_payment_details %}
+                        <input type="text" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
+                    {% else %}
+                        <input type="text" value="{{ card_payment_details[5] }}" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
+                    {% endif %}
                 </div>
                 <button type="submit" class="btn w-75 btn-primary">Save Card Details</button>
             </div>
@@ -368,8 +387,8 @@
 
 {% macro user_top_up_account_section(account_details, card_payment_details) %}
     <div class="container">
-    {{ account_details }}
-    {{ card_payment_details }}
+        {{ account_details }}
+        {{ card_payment_details }}
         {# TODO - FINISH TOP UP ACCOUNT - #}
         {# 1. ADD LINK TO MANAGE CARD DETAILS PAGE
         2. IF NO CARD DETAILS AT ALL HIDE INPUT FIELDS AND JUST SHOW BUTTON TO MANAGE CAR DETAILS
@@ -387,32 +406,49 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="mb-3 col-sm-12">
-                        <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                        <input type="text" value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-sm-12">
-                        <label for="inputCardNumber" class="form-label">Card Number</label>
-                        <input type="text" value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-8">
-                        <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                        <input type="text" value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-4">
-                        <label for="inputCCV" class="form-label">CCV</label>
-                        <input type="text" value="{{ card_payment_details[5] }}" class="form-control" id="inputCCV" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-12">
-                        <label for="inputAmount" class="form-label">Top Up Amount €</label>
-                        <input type="text" value="10" class="form-control" id="inputAmount" aria-describedby="payment">
-                    </div>
-                    <div class="mb-3 col-6">
-                        <button type="submit" class="btn w-100 btn-primary">Manage Card Details</button>
-                    </div>
-                    <div class="mb-3 col-6">
-                        <button type="submit" class="btn w-100 btn-primary">Process Payment</button>
-                    </div>
+                    {% if none in card_payment_details %}
+                        <div class="mb-3 col-sm-12">
+                            You must add card to account
+                        </div>
+                        <div class="mb-3 col-6">
+                            <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Add Card</a>
+                        </div>
+                    {% else %}
+                        <div class="mb-3 col-sm-12">
+                            <label for="inputNameOnCard" class="form-label">Name On Card</label>
+                            <input type="text" disabled value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-sm-12">
+                            <label for="inputCardNumber" class="form-label">Card Number</label>
+                            <input type="text" disabled value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-8">
+                            <label for="inputExpiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" disabled value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="inputCCV" class="form-label">CCV</label>
+                            <input type="text" required class="form-control" id="inputCCV" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="inputAmount" class="form-label">Top Up Amount €</label>
+                            <input type="text" value="10" required class="form-control" id="inputAmount" aria-describedby="payment">
+                        </div>
+                        <div class="mb-3 col-6">
+                            {% if none in card_payment_details %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Add Card</a>
+                            {% else %}
+                                <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Manage Card Details</a>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3 col-6">
+                            {% if none in card_payment_details %}
+                                <button type="submit" disabled name="processPayment" value="processPayment" class="btn w-100 btn-primary">Process Payment</button>
+                            {% else %}
+                                <button type="submit" name="processPayment" value="processPayment" class="btn w-100 btn-primary">Process Payment</button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             </form>
         </div>
