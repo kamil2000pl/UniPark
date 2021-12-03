@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS car_entry, car_exit, transaction_history, payment, car, dri
 
 CREATE TABLE account (
 	account_id INT AUTO_INCREMENT NOT NULL,
-	account_balance DOUBLE(4, 2),
+	account_balance DECIMAL(15,2),
 	email_address VARCHAR(30),
 	password VARCHAR(120),
     PRIMARY KEY (account_id));

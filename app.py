@@ -28,7 +28,6 @@ config = {
 # }
 
 cnx = mysql.connector.connect(**config)
-cursor = cnx.cursor(buffered=True)
 
 
 # Forms
@@ -58,6 +57,7 @@ def index():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterForm(request.form)
+    cursor = cnx.cursor(buffered=True)
 
     if request.method == 'POST' and form.validate_on_submit():
 
@@ -96,7 +96,6 @@ def register():
             cnx.commit()
             # Close Cursor & connection
             cursor.close()
-            cnx.close()
 
         return redirect(url_for("login"))
     else:
@@ -106,6 +105,7 @@ def register():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
+    cursor = cnx.cursor(buffered=True)
 
     if request.method == 'POST' and form.validate_on_submit():
         email = form.inputEmail.data
@@ -115,6 +115,7 @@ def login():
         values = (email,)
         cursor.execute(account_query, values)
         account = cursor.fetchone()
+        cursor.close()
         print(account)
 
         if not account or not check_password_hash(account[3], password):
@@ -179,31 +180,26 @@ def user_manage_personal_details():
 @app.route('/user_manage_personal_details/add_id', methods=["GET", "POST"])
 def user_add_id():
     college_id = request.form['studentId']
-    print(college_id)
     if 'loggedin' in session:
         user_details = get_user_details()
-        print("user_details")
-        print(user_details)
         if user_details[2] == "" or user_details[2] is None:
             add_college_id(user_details[0], college_id)
             return redirect(url_for('user_manage_personal_details'))
         else:
-            print("already have an id")
             return redirect(url_for('user_manage_personal_details'))
     return redirect(url_for('login'))
 
 
 @app.route('/user_manage_personal_details/delete_id', methods=["GET", "POST"])
 def user_delete_id():
-    print("DELETE ID ROUTE")
+    cursor = cnx.cursor(buffered=True)
     driver_id = request.form['driver_id']
-    print("driver_id")
-    print(driver_id)
     if 'loggedin' in session:
         remove_college_id = "UPDATE driver SET college_id = '' WHERE driver_id = %s"
         values = (driver_id,)
         cursor.execute(remove_college_id, values)
         cnx.commit()
+        cursor.close()
         return redirect(url_for('user_manage_personal_details'))
     return redirect(url_for('login'))
 
@@ -221,7 +217,6 @@ def user_add_car():
     vehicle_reg = request.form['vehicleReg'].upper()
     if 'loggedin' in session:
         car_details = get_car_details()
-        print(car_details)
         # add cars
         account = get_account_details()
         add_car(account[0], vehicle_reg)
@@ -250,24 +245,26 @@ def user_add_card_payment():
 
 
 def add_card(account, card_form_requests):
-    print(account)
-    print(card_form_requests)
+    cursor = cnx.cursor(buffered=True)
     insert_card = "UPDATE payment SET name_on_card = %s, card_number = %s, card_expiry = %s, ccv = %s WHERE account_id = %s"
     values = (card_form_requests[0], card_form_requests[1], card_form_requests[2], card_form_requests[3], account[0])
     cursor.execute(insert_card, values)
     # Commit to DB
     cnx.commit()
+    cursor.close()
     print(cursor.rowcount, "was inserted.")
 
 
 @app.route('/user_manage_car/delete_car', methods=["GET", "POST"])
 def user_delete_car():
+    cursor = cnx.cursor(buffered=True)
     vehicle_reg = request.form['vehicle_reg']
     if 'loggedin' in session:
         delete_car = "DELETE FROM car WHERE registration = %s"
         values = (vehicle_reg,)
         cursor.execute(delete_car, values)
         cnx.commit()
+        cursor.close()
         return redirect(url_for('user_manage_car'))
     return redirect(url_for('login'))
 
@@ -290,6 +287,35 @@ def user_top_up_account():
     return redirect(url_for('login'))
 
 
+@app.route('/user_top_up_account/add_funds', methods=["GET", "POST"])
+def user_add_funds():
+    # get the data from the forms
+    name_on_card = request.form['inputNameOnCard']
+    card_number = request.form['inputCardNumber']
+    expiry_date = request.form['inputExpiryDate']
+    ccv = request.form['inputCCV']
+    top_up_amount = request.form['inputAmount']
+    top_up_account_request = [name_on_card, card_number, expiry_date, ccv, top_up_amount]
+
+    if 'loggedin' in session:
+        card_payment_details = get_card_payment_details()
+        account_details = get_account_details()
+        add_funds(card_payment_details, top_up_account_request)
+        return redirect(url_for('user_top_up_account'))
+    return redirect(url_for('login'))
+
+
+def add_funds(card_payment_details, top_up_account_request):
+    cursor = cnx.cursor(buffered=True)
+    insert_funds = "UPDATE account SET account_balance = account_balance + %s WHERE account_id = %s"
+    values = (top_up_account_request[4], card_payment_details[1])
+    cursor.execute(insert_funds, values)
+    # Commit to DB
+    cnx.commit()
+    print(cursor.rowcount, "was inserted.")
+    cursor.close()
+
+
 @app.route('/kiosk')
 def kiosk():
     return render_template("kiosk.html")
@@ -308,35 +334,43 @@ def kiosk_print_ticket():
 
 
 def get_account_details():
+    cursor = cnx.cursor(buffered=True)
     account_query = "SELECT * FROM account WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(account_query, values)
     account = cursor.fetchone()
+    cursor.close()
     return account
 
 
 def get_user_details():
+    cursor = cnx.cursor(buffered=True)
     user_query = "SELECT * FROM driver WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(user_query, values)
     user = cursor.fetchone()
+    cursor.close()
     return user
 
 
 def get_car_details():
+    cursor = cnx.cursor(buffered=True)
     user_query = "SELECT * FROM car WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(user_query, values)
     # fetch one car atm
     car_details = cursor.fetchall()
+    cursor.close()
     return car_details
 
 
 def get_card_payment_details():
+    cursor = cnx.cursor(buffered=True)
     card_payment_query = "SELECT * FROM payment WHERE account_id = %s"
     values = (session['id'],)
     cursor.execute(card_payment_query, values)
     card_payment_result = cursor.fetchone()
+    cursor.close()
     return card_payment_result
 
 
@@ -344,6 +378,7 @@ def get_card_payment_details():
 
 def add_car(account_id, vehicle_reg):
     # check the car isn't registered already
+    cursor = cnx.cursor(buffered=True)
     check_car_query = "SELECT COUNT(registration) FROM car WHERE registration = %s"
     values = (vehicle_reg,)  # input from form on manage car details page
     cursor.execute(check_car_query, values)
@@ -356,12 +391,14 @@ def add_car(account_id, vehicle_reg):
         # Commit to DB
         cnx.commit()
         print(cursor.rowcount, "was inserted.")
+        cursor.close()
 
 
 # create a function that will add student id to the db
 
 def add_college_id(user_id, college_id):
     # check if add_college_id exists in driver
+    cursor = cnx.cursor(buffered=True)
     check_college_id_query = "SELECT COUNT(college_id) FROM driver WHERE college_id = %s"
     values = (college_id,)  # input from form on manage personal details page
     cursor.execute(check_college_id_query, values)
@@ -373,6 +410,7 @@ def add_college_id(user_id, college_id):
         # Commit to DB
         cnx.commit()
         print(cursor.rowcount, "was inserted.")
+        cursor.close()
 
 
 if __name__ == '__main__':

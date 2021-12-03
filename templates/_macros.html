@@ -41,10 +41,10 @@
 {% endmacro %}
 
 {% macro user_dashboard_section(account, user, car, payment) %}
-    {{ account }}
-    {{ user }}
-    {{ car }}
-    {{ payment }}
+{#    {{ account }}#}
+{#    {{ user }}#}
+{#    {{ car }}#}
+{#    {{ payment }}#}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
@@ -131,7 +131,7 @@
 
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
                     <div class="row h-100 align-content-center text-center">
-                        {% if user[2] == "" or  user[2] == None or car[0] == None or none in payment %}
+                        {% if user[2] == "" or  user[2] == None or not car or none in payment %}
                             <div class="col-12">
                                 <i class="bi bi-exclamation-circle-fill text-warning dashboard-icon"></i>
                             </div>
@@ -153,7 +153,7 @@
 
 {% macro user_manage_account_section(account, user, car, payment) %}
     <div class="container user-dashboard-container">
-        {{ payment }}
+{#        {{ payment }}#}
         <div class="row m-auto justify-content-center">
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
@@ -337,47 +337,43 @@
 
 {% macro user_manage_payment_section(card_payment_details) %}
     <div class="container">
-        Current details:
-        {{ card_payment_details }}
+{#        Current details:#}
+{#        {{ card_payment_details }}#}
         <form action="{{ url_for('user_add_card_payment') }}" method="POST" class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
                     <label for="inputNameOnCard" class="form-label">Name On Card</label>
                     {% if none in card_payment_details %}
                         <input type="text" autofocus required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
-                           aria-describedby="payment">
+                               aria-describedby="payment">
                     {% else %}
                         <input type="text" autofocus value="{{ card_payment_details[2] }}" required class="form-control" name="inputNameOnCard" id="inputNameOnCard"
-                           aria-describedby="payment">
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     <label for="inputCardNumber" class="form-label">Card Number</label>
                     {% if none in card_payment_details %}
-                    <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
-                           aria-describedby="payment">
+                        <input type="text" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                               aria-describedby="payment">
                     {% else %}
-                         <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
-                           aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[3] }}" required class="form-control" name="inputCardNumber" id="inputCardNumber"
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-8">
                     <label for="inputExpiryDate" class="form-label">Expiry Date</label>
                     {% if none in card_payment_details %}
-                    <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
-                           aria-describedby="payment">
+                        <input type="text" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                               aria-describedby="payment">
                     {% else %}
-                         <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
-                           aria-describedby="payment">
+                        <input type="text" value="{{ card_payment_details[4] }}" required class="form-control" name="inputExpiryDate" id="inputExpiryDate"
+                               aria-describedby="payment">
                     {% endif %}
                 </div>
                 <div class="mb-3 col-4">
                     <label for="inputCCV" class="form-label">CCV</label>
-                    {% if none in card_payment_details %}
-                        <input type="text" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
-                    {% else %}
-                        <input type="text" value="{{ card_payment_details[5] }}" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
-                    {% endif %}
+                    <input type="text" required class="form-control" name="inputCCV" id="inputCCV" aria-describedby="payment">
                 </div>
                 <button type="submit" class="btn w-75 btn-primary">Save Card Details</button>
             </div>
@@ -387,16 +383,10 @@
 
 {% macro user_top_up_account_section(account_details, card_payment_details) %}
     <div class="container">
-        {{ account_details }}
-        {{ card_payment_details }}
-        {# TODO - FINISH TOP UP ACCOUNT - #}
-        {# 1. ADD LINK TO MANAGE CARD DETAILS PAGE
-        2. IF NO CARD DETAILS AT ALL HIDE INPUT FIELDS AND JUST SHOW BUTTON TO MANAGE CAR DETAILS
-        3. USE JAVASCRIPT TO HIDE CARD DETAILS, ONLY SHOW LAST 4 DIGITS
-        https://javascript.plainenglish.io/javascript-algorithm-hiding-the-card-number-413801b267e9
-        #}
+{#        {{ account_details }}#}
+{#        {{ card_payment_details }}#}
         <div class="row m-auto justify-content-center">
-            <form class="main-form m-auto bg-form p-4">
+            <form action="{{ url_for('user_add_funds') }}" method="POST" class="main-form m-auto bg-form p-4">
                 <div class="bg-main p-4 text-center mb-3 border-5">
                     <div class="display-5">
                         Current Balance
@@ -408,7 +398,9 @@
                 <div class="row justify-content-center">
                     {% if none in card_payment_details %}
                         <div class="mb-3 col-sm-12">
-                            You must add card to account
+                             <div class="display-5 text-center text-white">
+                                You must add a card to account
+                            </div>
                         </div>
                         <div class="mb-3 col-6">
                             <a href="{{ url_for('user_card_payment_details') }}" class="btn w-100 btn-primary" role="button" aria-disabled="true">Add Card</a>
@@ -416,23 +408,23 @@
                     {% else %}
                         <div class="mb-3 col-sm-12">
                             <label for="inputNameOnCard" class="form-label">Name On Card</label>
-                            <input type="text" disabled value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
+                            <input type="text" name="inputNameOnCard" readonly value="{{ card_payment_details[2] }}" class="form-control" id="inputNameOnCard" aria-describedby="payment">
                         </div>
                         <div class="mb-3 col-sm-12">
                             <label for="inputCardNumber" class="form-label">Card Number</label>
-                            <input type="text" disabled value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
+                            <input type="text" name="inputCardNumber" readonly value="{{ card_payment_details[3] }}" class="form-control" id="inputCardNumber" aria-describedby="payment">
                         </div>
                         <div class="mb-3 col-8">
                             <label for="inputExpiryDate" class="form-label">Expiry Date</label>
-                            <input type="text" disabled value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
+                            <input type="text" name="inputExpiryDate" readonly value="{{ card_payment_details[4] }}" class="form-control" id="inputExpiryDate" aria-describedby="payment">
                         </div>
                         <div class="mb-3 col-4">
                             <label for="inputCCV" class="form-label">CCV</label>
-                            <input type="text" required class="form-control" id="inputCCV" aria-describedby="payment">
+                            <input type="text" name="inputCCV" required class="form-control" id="inputCCV" aria-describedby="payment">
                         </div>
                         <div class="mb-3 col-12">
                             <label for="inputAmount" class="form-label">Top Up Amount €</label>
-                            <input type="text" value="10" required class="form-control" id="inputAmount" aria-describedby="payment">
+                            <input type="text" name="inputAmount" value="10" required class="form-control" id="inputAmount" aria-describedby="payment">
                         </div>
                         <div class="mb-3 col-6">
                             {% if none in card_payment_details %}
