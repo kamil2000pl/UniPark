@@ -10,7 +10,7 @@ Unipark uses a camera running OCR (Optical Character Recognition) to read vehicl
 *<h4>UNIPARK IMPORTANT LINKS</h4>*
 
 *UniPark Website:*
-www.UniPark.tk
+https://www.unipark.tk/
 
 *Scrumwise:*
 https://www.scrumwise.com/scrum/#/overview/project/l8-sd3b-2021-unipark/id-31429-70387-111
