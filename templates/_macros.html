@@ -41,10 +41,10 @@
 {% endmacro %}
 
 {% macro user_dashboard_section(account, user, car, payment) %}
-{#    {{ account }}#}
-{#    {{ user }}#}
-{#    {{ car }}#}
-{#    {{ payment }}#}
+    {#    {{ account }}#}
+    {#    {{ user }}#}
+    {#    {{ car }}#}
+    {#    {{ payment }}#}
     <div class="container user-dashboard-container">
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
@@ -153,7 +153,7 @@
 
 {% macro user_manage_account_section(account, user, car, payment) %}
     <div class="container user-dashboard-container">
-{#        {{ payment }}#}
+        {#        {{ payment }}#}
         <div class="row m-auto justify-content-center">
             <div class="row">
                 <div class="col-6 pt-3 pb-3 border bg-main main-hover-bg-change position-relative">
@@ -230,12 +230,24 @@
 
 {% macro user_manage_car_section(car) %}
     <div class="container user-dashboard-container">
+
+        {#        {% with messages = get_flashed_messages() %}#}
+        {#            {% if messages %}#}
+        {#                {% if 'Car registration added successfully' in message %}#}
+        {#                    <div class="main-form m-auto mb-3 alert alert-warning alert-dismissible fade show" role="alert">#}
+        {#                        <strong>{{ message }}</strong>#}
+        {#                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>#}
+        {#                    </div>#}
+        {#                {% endif %}#}
+        {#            {% endif %}#}
+        {#        {% endwith %}#}
+
         <div class="row m-auto justify-content-center">
             <div class="row mb-2">
                 <div class="col-12 border bg-main">
                     <div class="p-4">
                         {% if not car %}
-                            <div class="display-5 mb-4 text-center text-white">
+                            <div class="display-5 text-center text-white">
                                 You must add a car
                                 <i class="bi bi-exclamation-circle-fill text-warning"></i>
                             </div>
@@ -290,7 +302,7 @@
                 <div class="col-12 border bg-main">
                     <div class="p-4">
                         {% if user[2] is none or user[2] == "" %}
-                            <div class="display-5 mb-4 text-center text-white">
+                            <div class="display-5 text-center text-white">
                                 You must add a College ID
                                 <i class="bi bi-exclamation-circle-fill text-warning"></i>
                             </div>
@@ -337,8 +349,8 @@
 
 {% macro user_manage_payment_section(card_payment_details) %}
     <div class="container">
-{#        Current details:#}
-{#        {{ card_payment_details }}#}
+        {#        Current details:#}
+        {#        {{ card_payment_details }}#}
         <form action="{{ url_for('user_add_card_payment') }}" method="POST" class="main-form m-auto bg-form p-4">
             <div class="row justify-content-center">
                 <div class="mb-3 col-sm-12">
@@ -383,8 +395,8 @@
 
 {% macro user_top_up_account_section(account_details, card_payment_details) %}
     <div class="container">
-{#        {{ account_details }}#}
-{#        {{ card_payment_details }}#}
+        {#        {{ account_details }}#}
+        {#        {{ card_payment_details }}#}
         <div class="row m-auto justify-content-center">
             <form action="{{ url_for('user_add_funds') }}" method="POST" class="main-form m-auto bg-form p-4">
                 <div class="bg-main p-4 text-center mb-3 border-5">
@@ -398,7 +410,7 @@
                 <div class="row justify-content-center">
                     {% if none in card_payment_details %}
                         <div class="mb-3 col-sm-12">
-                             <div class="display-5 text-center text-white">
+                            <div class="display-5 text-center text-white">
                                 You must add a card to account
                             </div>
                         </div>

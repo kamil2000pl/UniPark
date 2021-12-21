@@ -46,6 +46,20 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Register')
 
 
+# would have liked to get more validation done on all forms but ran out of time
+class CardPaymentDetailsForm(FlaskForm):
+    inputNameOnCard = StringField('Name on card', validators=[InputRequired(message="Please enter the name on card"), Length(min=3, message="Name on card must be at least 3 characters")])
+    inputCardNumber = StringField('Card number', validators=[InputRequired(message="Please enter the card number"), Regexp("^4[0-9]{12}(?:[0-9]{3})?$", message="Enter a valid card number. Card must begin with 4")])
+    inputExpiryDate = StringField('Expiry date', validators=[InputRequired(message="Please enter the expiry date")])
+    inputCCV = StringField('CCV', validators=[InputRequired(message="Please enter the CVV number"), Regexp("^[0-9]{3, 4}$", message="CCV must be 3 or 4 digits")])
+    submit = SubmitField('Save Card Details')
+
+
+class VehicleRegForm(FlaskForm):
+    inputVehicleReg = StringField('Vehicle Registration', validators=[InputRequired(message="Please enter your vehicle registration")])
+    submit = SubmitField('Add Vehicle')
+
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -201,7 +215,7 @@ def user_delete_id():
     return redirect(url_for('login'))
 
 
-@app.route('/user_manage_car')
+@app.route('/user_manage_car/')
 def user_manage_car():
     if 'loggedin' in session:
         car = get_car_details()
@@ -388,6 +402,7 @@ def add_car(account_id, vehicle_reg):
         # Commit to DB
         cnx.commit()
         print(cursor.rowcount, "was inserted.")
+        flash("Car registration added successfully")
         cursor.close()
 
 
