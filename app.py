@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import InputRequired, Email, Length, EqualTo, Regexp, DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 
@@ -38,15 +38,12 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    inputFullName = StringField('Full Name', validators=[InputRequired(), Length(min=3)])
-    inputEmail = StringField('Email Address', validators=[Email(), InputRequired(), Length(min=8)])
-    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8), EqualTo('inputPasswordRepeat',
-                                                                                                  message='Passwords must match')])
+    inputFullName = StringField('Full Name', validators=[InputRequired(message="Please enter your full name"), Length(min=3, message="Full name must be at least 3 characters")])
+    inputEmail = StringField('Email Address', validators=[Email(message="Please enter a valid email address"), InputRequired(message="Please enter your email address")])
+    inputPassword = PasswordField('Password', validators=[InputRequired(message="Please enter your password"), EqualTo('inputPasswordRepeat', message='Passwords must match'), Regexp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message="Password must contain a minimum of eight characters, at least one letter and one number")])
     inputPasswordRepeat = PasswordField('Repeat Password')
+    inputCheckBoxTerms = BooleanField(validators=[DataRequired(message="You must agree to terms of service to proceed")])
     submit = SubmitField('Register')
-
-
-# ROUTES NOT CORRECT, JUST DOING BELOW TO VIEW WEBPAGES QUICKLY
 
 
 @app.route('/')
@@ -74,8 +71,8 @@ def register():
         check_email = cursor.fetchone()
 
         if check_email:  # if the email already exists
-            msg = "Email already exists"
-            print(msg)
+            flash("Email address already exists")
+            return render_template("register.html", form=form)
         else:  # if the email does not exist we can then proceed to adding the account
             add_account = "INSERT INTO account(account_balance, email_address, password) VALUES (%s, %s, %s)"  # account id auto created and incremented
             account_data = (0.00, email, password)

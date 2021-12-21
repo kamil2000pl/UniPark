@@ -12,6 +12,27 @@
 {% endblock %}
 
 {% block register_form_section %}
+
+    {% if form.errors %}
+    <div class="main-form m-auto mb-3 alert alert-warning alert-dismissible fade show" role="alert">
+        {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+                <ul>
+                    <li class="fw-bold">{{ error }}</li>
+                </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for message in get_flashed_messages() %}
+        <div class="main-form m-auto mb-3 alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
     <div class="container">
         <form method="POST" action="{{ url_for('register')}}" class="main-form m-auto bg-form p-4">
             {{ form.hidden_tag() }}
@@ -19,41 +40,14 @@
                 <div class="mb-3 col-sm-12">
                     {{ form.inputFullName.label(class_="form-label") }}
                     {{ form.inputFullName(autofocus=true, autocomplete="off",class_="form-control") }}
-                    {% if form.inputFullName.errors %}
-                    <div id="fullNameHelperText" class="form-text">
-                        <ul>
-                        {% for error in form.inputFullName.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputEmail.label(class_="form-label") }}
                     {{ form.inputEmail(autocomplete="off", class_="form-control") }}
-                    {% if form.inputEmail.errors %}
-                    <div id="emailHelperText" class="form-text">
-                        <ul>
-                        {% for error in form.inputEmail.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputPassword.label(class_="form-label") }}
                     {{ form.inputPassword(class_="form-control") }}
-                    {% if form.inputPassword.errors %}
-                    <div id="passwordHelperText" class="form-text">
-                        <ul>
-                        {% for error in form.inputPassword.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
                 </div>
                 <div class="mb-3 col-sm-12">
                     {{ form.inputPasswordRepeat.label(class_="form-label") }}
@@ -65,7 +59,7 @@
                 </div>
                 <div class="mb-3 form-check col-sm-12 text-center">
                     <label class="form-check-label" for="termsCheck">
-                        <input type="checkbox" class="form-check-input" id="termsCheck">
+                        {{ form.inputCheckBoxTerms(id_="termsCheck", class_="form-check-input") }}
                         Agree to terms & conditions
                     </label>
                 </div>
