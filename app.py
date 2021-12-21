@@ -32,8 +32,8 @@ cnx = mysql.connector.connect(**config)
 
 # Forms
 class LoginForm(FlaskForm):
-    inputEmail = StringField('Email Address', validators=[Email(), InputRequired(), Length(min=8)])
-    inputPassword = PasswordField('Password', validators=[InputRequired(), Length(min=8)])
+    inputEmail = StringField('Email Address', validators=[Email(message="Please enter a valid email address"), InputRequired(message="Please enter your email address")])
+    inputPassword = PasswordField('Password', validators=[InputRequired(message="Please enter your password"), Regexp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message="Password must contain a minimum of eight characters, at least one letter and one number")])
     submit = SubmitField('Submit')
 
 
@@ -116,10 +116,10 @@ def login():
         print(account)
 
         if not account or not check_password_hash(account[3], password):
-            msg = "Unsuccessful Login!"
+            msg = "Unsuccessful Login, try again"
+            flash(msg)
             return render_template("login.html", form=form)
         else:
-            msg = "Logged in successfully"
             session['loggedin'] = True
             session['id'] = account[0]
             return redirect(url_for("user_dashboard"))
