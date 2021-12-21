@@ -1,15 +1,17 @@
+import time
+
 import cv2
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import pytesseract
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import publish as publish
 import threading
 
 PIR_pin = 23
 
-# GPIO.setwarnings(False)
-# GPIO.setmode(GPIO.BCM)
-# GPIO.setup(PIR_pin, GPIO.IN)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIR_pin, GPIO.IN)
 # TODO - GPIO.OUT Camera?
 
 # Pubnub
@@ -25,33 +27,45 @@ data = {}
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = ''
 pnconfig.publish_key = ''
-pnconfig.uuid = 'a4009a03-48a7-4742-a3b0-6969bf1ae10e'
+pnconfig.uuid = ''
 pubnub = PubNub(pnconfig)
 
 # Set tesseract path to where the tesseract exe file is located
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+#pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+#pytesseract.tesseract_cmd=r'/home/pi/.local/bin/pytesseract'
+
+
+import io
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+import numpy as np
+
+# Initialise camera
+camera = PiCamera()
 
 
 # Read car image and convert color to RGB
 def read_reg():
-    carplate_img = cv2.imread('briancar2.jpg')
+
+
+    time.sleep(0.5)
+    camera.capture('image.jpg')
+    time.sleep(2)
+    carplate_img = cv2.imread('image.jpg')
     carplate_img_rgb = cv2.cvtColor(carplate_img, cv2.COLOR_BGR2RGB)
 
     # plt.imshow(carplate_img_rgb)
     carplate_img_rgb_crop = carplate_extract(carplate_img_rgb)
-    carplate_img_rgb_resize = enlarge_img(carplate_img_rgb_crop,1.2)
-    carplate_string = read_plate(carplate_img_rgb_resize)
-    return carplate_string
 
-
-# Function to enlarge the plt display for user to view more clearly
-# def enlarge_plt_display(image, scale_factor):
-#     width = int(image.shape[1] * scale_factor / 100)
-#     height = int(image.shape[0] * scale_factor / 100)
-#     dim = (width, height)
-#     plt.figure(figsize = dim)
-#     plt.axis('off')
-#     plt.imshow(image)
+    # If no reg is detected, prompt for ID
+    if carplate_img_rgb_crop == "No reg":
+        d_number = input()
+        return d_number
+    else:
+        carplate_img_rgb_resize = enlarge_img(carplate_img_rgb_crop,150)
+        carplate_string = read_plate(carplate_img_rgb_resize)
+        print(carplate_string)
+        return carplate_string
 
 
 # Import Haar Cascade XML file for Russian car plate numbers
@@ -65,7 +79,11 @@ def carplate_extract(image):
     for x, y, w, h in carplate_rects:
         carplate_img = image[y + 15:y + h - 10, x + 15:x + w - 20]
 
-    return carplate_img
+    # Check if a reg has been detected
+    if carplate_rects == ():
+        return "No reg"
+    else:
+        return carplate_img
 
 
 # Enlarge image and apply greyscale
@@ -85,33 +103,18 @@ def read_plate(image):
                                 config=f'--psm 8 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
     return reg_string
 
-#
-# # Display extracted car license plate image
-# carplate_extract_img = carplate_extract(carplate_img_rgb)
-# carplate_extract_img = enlarge_img(carplate_extract_img, 150)
-# cv2.imshow('test',carplate_extract_img)
-# cv2.waitKey(0)
-#
-# carplate_extract_img_gray = cv2.cvtColor(carplate_extract_img, cv2.COLOR_RGB2GRAY)
-#
-# # Apply median blur + grayscale
-# carplate_extract_img_gray_blur = cv2.medianBlur(carplate_extract_img_gray,3)
-#
-# print(pytesseract.image_to_string(carplate_extract_img_gray_blur,
-#                                   config = f'--psm 8 --oem 3 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'))
 
+# Detect vehicle with PIR sensor
 def vehicle_detection():
     while True:
         if GPIO.input(PIR_pin):
             print("Vehicle detected")
-            # TODO - trigger camera to take a photo
-            read_reg()
-            # TODO - publish car reg to Pubnub
-            publish(my_channel, {"car_reg": ""})
+            car_reg = read_reg()
+            publish(my_channel, {"car_reg/number": car_reg})
+            time.sleep(1)
         else:
             print("No vehicle detected")
-            publish(my_channel, {"car_reg": "none"})
-            # TODO - trigger barcode scanner prompt
+            time.sleep(1)
 
 
 def publish(channel, message):
@@ -176,6 +179,7 @@ def handle_event(self, msg):
             data["camera"] = False
 
 
+# Run vehicle detection code
 vehicle_detection()
 
 if __name__ == "__main__":
